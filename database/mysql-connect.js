@@ -2,6 +2,7 @@ require('dotenv').config();
 import mysql from 'mysql';
 
 const {
+    MYSQL_DATABASE,
     MYSQL_HOST,
     MYSQL_PASSWORD,
     MYSQL_USERNAME,
@@ -11,6 +12,7 @@ const connection = mysql.createConnection({
     host: MYSQL_HOST,
     user: MYSQL_USERNAME,
     password: MYSQL_PASSWORD,
+    database: MYSQL_DATABASE,
 });
  
 connection.connect(err => {
