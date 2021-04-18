@@ -1,0 +1,23 @@
+{
+  "name": "deep-note",
+  "version": "1.0.0",
+  "description": "Infinite-depth folder and note taking application",
+  "main": "index.js",
+  "scripts": {
+    "watch": "nodemon -r esm server.js",
+    "migrate": "node node_modules/db-migrate/bin/db-migrate --config database/db-migrate-config.json -m database/migrations"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "db-migrate": "^0.11.12",
+    "db-migrate-mysql": "^2.1.2",
+    "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
