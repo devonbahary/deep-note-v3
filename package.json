@@ -4,6 +4,7 @@
   "description": "Infinite-depth folder and note taking application",
   "main": "index.js",
   "scripts": {
+    "build": "webpack",
     "watch": "concurrently \"npm run watch:client\" \"npm run watch:server\"",
     "watch:client": "webpack serve",
     "watch:server": "nodemon -r esm server.js",
