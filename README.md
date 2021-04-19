@@ -3,7 +3,7 @@
 
 
 ## Local Development
-`npm run watch`
+> `npm run watch`
 
 #### `webpack.config.js`
 
@@ -18,4 +18,4 @@ proxy: {
 ```
 
 ## Migrations
-`npm run migrate ...` to utilize config and migration directory 
+> `npm run migrate [up|down|create] [options]` 
