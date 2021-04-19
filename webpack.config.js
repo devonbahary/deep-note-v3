@@ -19,7 +19,9 @@ module.exports = {
         ],
     },
     devServer: {
+        compress: true,
         contentBase: './dist',
+        historyApiFallback: true,
         proxy: {
             '/api': {
                 target: `http://localhost:3000`,
@@ -37,5 +39,6 @@ module.exports = {
     output: {
         filename: 'bundle.js',
         path: path.join(__dirname, 'dist'),
+        publicPath: '/',
     },
 };
