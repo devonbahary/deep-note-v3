@@ -8,7 +8,7 @@ const {
     MYSQL_USERNAME,
 } = process.env;
 
-const connection = mysql.createConnection({
+export const connection = mysql.createConnection({
     host: MYSQL_HOST,
     user: MYSQL_USERNAME,
     password: MYSQL_PASSWORD,
