@@ -9,7 +9,7 @@ export class FoldersRepository extends BaseMySQLRepository {
         super('folders');
     }
 
-    async create(name, parentFolderUuid) {
+    async create(name, parentFolderUUID) {
         const uuid = uuidV1();
 
         await this.query(
@@ -17,7 +17,7 @@ export class FoldersRepository extends BaseMySQLRepository {
                 INSERT INTO ${this.tableName} (uuid_bin, name, parent_folder_uuid_bin)
                 VALUES (${UUID_TO_BIN}, ?, ${UUID_TO_BIN})
             `,
-            [ uuid, name, parentFolderUuid ],
+            [ uuid, name, parentFolderUUID ],
         );
 
         const newRecord = await this.findOne(uuid);
@@ -28,7 +28,7 @@ export class FoldersRepository extends BaseMySQLRepository {
     async findOne(uuid) {
         const results = await this.query(
             `
-                SELECT uuid, name, parent_folder_uuid FROM ${this.tableName} 
+                SELECT uuid, name, parent_folder_uuid, updated_at FROM ${this.tableName} 
                 ${WHERE_UUID_EQUALS}
             `,
             [ uuid ],
@@ -36,14 +36,24 @@ export class FoldersRepository extends BaseMySQLRepository {
         return results.length ? results[0] : null;
     }
 
-    async update(uuid, name, parentFolderUuid) {
+    findByParentFolderUUID(parentFolderUUID) {
+        return this.query(
+            `
+                SELECT uuid, name, parent_folder_uuid, updated_at FROM ${this.tableName}
+                WHERE parent_folder_uuid_bin = ${UUID_TO_BIN}
+            `,
+            [ parentFolderUUID ],
+        );
+    }
+
+    async update(uuid, name, parentFolderUUID) {
         await this.query(
             `
                 UPDATE ${this.tableName} 
                 SET name = ?, parent_folder_uuid_bin = ${UUID_TO_BIN}
                 ${WHERE_UUID_EQUALS}
             `,
-            [ name, parentFolderUuid, uuid ],
+            [ name, parentFolderUUID, uuid ],
         );
 
         const updatedRecord = await this.findOne(uuid);
