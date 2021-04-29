@@ -42,9 +42,11 @@ export const Folders = () => {
 
     const goBackFn = folder.parent_folder_uuid ? () => RouterUtil.goToFolder(history, folder.parent_folder_uuid) : null;
 
+    const title = folder.name || 'untitled';
+
     return (
         <div>
-            <AppBar goBackFn={goBackFn} title={folder.name} />
+            <AppBar goBackFn={goBackFn} title={title} />
             <Content>
                 <List>
                     {childFolders.map(childFolder => {
