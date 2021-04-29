@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import List from '@material-ui/core/List';
-import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
-import FolderIcon from '@material-ui/icons/Folder';
 import { AppBar } from '../common/AppBar';
 import { Content } from '../common/Content';
+import { AddFolderListItem } from './AddFolderListItem';
 import { FolderListItem } from './FolderListItem';
 import { RouterUtil } from '../utilities/RouterUtil';
 import { ApiUtil } from '../utilities/ApiUtil';
@@ -45,28 +44,8 @@ export const Folder = () => {
             <AppBar goBackFn={goBackFn} title={title} />
             <Content>
                 <List>
-                    {childFolders.map(childFolder => {
-                        const { uuid, name, updated_at } = childFolder;
-                        const formattedUpdatedAt = new Date(updated_at).toLocaleString();
-                        const navigateToFolder = () => RouterUtil.goToFolder(history, uuid);
-
-                        return (
-                            <FolderListItem 
-                                key={uuid}
-                                folderIcon={FolderIcon}
-                                onClick={navigateToFolder}
-                                primaryText={name || 'untitled'}
-                                secondaryText={formattedUpdatedAt}
-                            />
-                        );
-                    })}
-                    {!isAddingNewFolder && (
-                        <FolderListItem
-                            folderIcon={CreateNewFolderIcon}
-                            onClick={addNewFolder}
-                            primaryText='Add folder'
-                        />
-                    )}
+                    {childFolders.map(childFolder => <FolderListItem key={childFolder.uuid} folder={childFolder} /> )}
+                    {!isAddingNewFolder && <AddFolderListItem onClick={addNewFolder} />}
                 </List>    
             </Content>
         </>
