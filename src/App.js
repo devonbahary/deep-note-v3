@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
-import { Folders } from './Folders';
+import { Folder } from './folder/Folder';
 import { Home } from './home/Home';
 
 const useStyles = makeStyles(() => ({
@@ -22,7 +22,7 @@ const App = () => {
             <Router>
                 <Switch>
                     <Route path="/folders/:uuid">
-                        <Folders />
+                        <Folder />
                     </Route>
                     <Route exact path="">
                         <Home />

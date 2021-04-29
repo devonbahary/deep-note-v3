@@ -1,51 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import FolderIcon from '@material-ui/icons/Folder';
-import { makeStyles } from '@material-ui/core/styles';
-import { AppBar } from './common/AppBar';
-import { Content } from './common/Content';
-import { RouterUtil } from './utilities/RouterUtil';
-import { ApiUtil } from './utilities/ApiUtil';
+import { AppBar } from '../common/AppBar';
+import { Content } from '../common/Content';
+import { FolderListItem } from './FolderListItem';
+import { RouterUtil } from '../utilities/RouterUtil';
+import { ApiUtil } from '../utilities/ApiUtil';
 
-const useStyles = makeStyles(() => ({
-    folder: {
-        cursor: 'pointer',
-    },
-}));
-
-const FolderListItem = (props) => {
-    const { 
-        folderIcon: FolderIcon,
-        onClick,
-        primaryText,
-        secondaryText,
-    } = props;
-    
-    const classes = useStyles();
-
-    return (
-        <>
-            <ListItem className={classes.folder} onClick={onClick}>
-                <ListItemAvatar>
-                    <Avatar>
-                        <FolderIcon />
-                    </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={primaryText} secondary={secondaryText} />
-            </ListItem>
-            <Divider />
-        </>
-    );
-};
-
-export const Folders = () => {
+export const Folder = () => {
     const { uuid } = useParams();
     const history = useHistory();
 
