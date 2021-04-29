@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import { makeStyles } from '@material-ui/core/styles';
 
+// TODO: how to share with FolderListItem
 const useStyles = makeStyles(() => ({
     folder: {
         cursor: 'pointer',

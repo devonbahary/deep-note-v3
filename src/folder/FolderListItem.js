@@ -9,6 +9,7 @@ import FolderIcon from '@material-ui/icons/Folder';
 import { makeStyles } from '@material-ui/core/styles';
 import { RouterUtil } from '../utilities/RouterUtil';
 
+// TODO: how to share with AddFolderListItem
 const useStyles = makeStyles(() => ({
     folder: {
         cursor: 'pointer',
