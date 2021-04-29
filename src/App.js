@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import { Folders } from './Folders';
-import { Home } from './Home';
+import { Home } from './home/Home';
 
 const useStyles = makeStyles(() => ({
     content: {
