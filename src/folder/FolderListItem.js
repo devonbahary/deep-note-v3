@@ -11,11 +11,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import FolderIcon from '@material-ui/icons/Folder';
-import MoreVert from '@material-ui/icons/MoreVert';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { makeStyles } from '@material-ui/core/styles';
 import { RouterUtil } from '../utilities/RouterUtil';
 import { ApiUtil } from '../utilities/ApiUtil';
+import { ListItemIcon } from '@material-ui/core';
 
 // TODO: how to share with AddFolderListItem
 const useStyles = makeStyles(() => ({
@@ -108,11 +111,21 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
                 {!isLoading && (
                     <ListItemSecondaryAction>
                         <IconButton edge="end" onClick={openMenu}>
-                            <MoreVert />
+                            <MoreVertIcon />
                         </IconButton>
                         <Menu onClose={closeMenu} open={Boolean(menuAnchorEl)} anchorEl={menuAnchorEl}>
-                            <MenuItem onClick={handleMenuRename}>Rename</MenuItem>
-                            <MenuItem onClick={handleMenuDelete}>Delete</MenuItem>
+                            <MenuItem onClick={handleMenuRename}>
+                                <ListItemIcon>
+                                    <EditIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Rename" />
+                            </MenuItem>
+                            <MenuItem onClick={handleMenuDelete}>
+                                <ListItemIcon>
+                                    <DeleteIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Delete" />
+                            </MenuItem>
                         </Menu>
                     </ListItemSecondaryAction>
                 )}
