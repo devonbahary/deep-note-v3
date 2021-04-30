@@ -46,14 +46,14 @@ export class FoldersRepository extends BaseMySQLRepository {
         );
     }
 
-    async update(uuid, name, parentFolderUUID) {
+    async update(uuid, name) {
         await this.query(
             `
                 UPDATE ${this.tableName} 
-                SET name = ?, parent_folder_uuid_bin = ${UUID_TO_BIN}
+                SET name = ?
                 ${WHERE_UUID_EQUALS}
             `,
-            [ name, parentFolderUUID, uuid ],
+            [ name, uuid ],
         );
 
         const updatedRecord = await this.findOne(uuid);

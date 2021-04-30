@@ -34,10 +34,10 @@ router.post('/', async (req, res, next) => {
 
 router.put('/:uuid', async (req, res, next) => {
     const { uuid } = req.params;
-    const { name, parentFolderUUID } = req.body;
+    const { name } = req.body;
 
     await RouteUtil.handleAsync(async () => {
-        const folder = await foldersRepository.update(uuid, name, parentFolderUUID);
+        const folder = await foldersRepository.update(uuid, name);
         if (!folder) return RouteUtil.sendNotFound(res);
         res.send(folder);    
     }, next);

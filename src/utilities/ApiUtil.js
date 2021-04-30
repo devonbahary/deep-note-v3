@@ -10,4 +10,9 @@ export class ApiUtil {
         const { data } = await axios.post(`/api/folders`, { name, parentFolderUUID });
         return data;
     }
+
+    static async updateFolder(uuid, name) {
+        const { data } = await axios.put(`/api/folders/${uuid}`, { name });
+        return data;
+    }
 }
