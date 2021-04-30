@@ -15,4 +15,8 @@ export class ApiUtil {
         const { data } = await axios.put(`/api/folders/${uuid}`, { name });
         return data;
     }
+
+    static async deleteFolder(uuid) {
+        await axios.delete(`/api/folders/${uuid}`);
+    }
 }

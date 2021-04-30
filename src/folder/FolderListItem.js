@@ -27,13 +27,17 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-export const FolderListItem = ({ folder, updateChildFolder }) => {
+// TODO: confirm want delete, include # of children in confirm
+export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder }) => {
     const { uuid, name, updated_at } = folder;
 
     const history = useHistory();
 
     const formattedUpdatedAt = new Date(updated_at).toLocaleString();
-    const navigateToFolder = () => RouterUtil.goToFolder(history, uuid);
+    const navigateToFolder = () => {
+        if (isLoading) return;
+        RouterUtil.goToFolder(history, uuid);
+    }
 
     const [ menuAnchorEl, setMenuAnchorEl ] = useState(null);
     const openMenu = (e) => setMenuAnchorEl(e.currentTarget);
@@ -48,16 +52,23 @@ export const FolderListItem = ({ folder, updateChildFolder }) => {
         setTimeout(() => setFolderRenameText(name || ''), 1);
     };
 
-    const [ isUpdating, setIsUpdating ] = useState(false);
+    const handleMenuDelete = async () => {
+        setIsLoading(true);
+        await ApiUtil.deleteFolder(uuid);
+        deleteChildFolder(uuid);
+        setIsLoading(false);
+    };
+
+    const [ isLoading, setIsLoading ] = useState(false);
 
     const handleFolderRenameChange = (e) => setFolderRenameText(e.target.value);
     const handleFolderRenameBlur = async () => {
         setFolderRenameText(null);
         if (folderRenameText === name) return;
-        setIsUpdating(true);
+        setIsLoading(true);
         const folder = await ApiUtil.updateFolder(uuid, folderRenameText);
         updateChildFolder(uuid, folder);
-        setIsUpdating(false);
+        setIsLoading(false);
     };
     const handleFolderRenameKeypress = (e) => {
         if (e.key === 'Enter') handleFolderRenameBlur();
@@ -71,7 +82,7 @@ export const FolderListItem = ({ folder, updateChildFolder }) => {
         <>
             <ListItem className={classes.folder} divider onClick={navigateToFolder}>
                 <ListItemAvatar>
-                    {isUpdating ? (
+                    {isLoading ? (
                         <CircularProgress />
                     ) : (
                         <Avatar>
@@ -94,14 +105,17 @@ export const FolderListItem = ({ folder, updateChildFolder }) => {
                 ) : (
                     <ListItemText primary={name || 'untitled'} secondary={formattedUpdatedAt} />
                 )}
-                <ListItemSecondaryAction>
-                    <IconButton edge="end" onClick={openMenu}>
-                        <MoreVert />
-                    </IconButton>
-                    <Menu onClose={closeMenu} open={Boolean(menuAnchorEl)} anchorEl={menuAnchorEl}>
-                        <MenuItem onClick={handleMenuRename}>Rename</MenuItem>
-                    </Menu>
-                </ListItemSecondaryAction>
+                {!isLoading && (
+                    <ListItemSecondaryAction>
+                        <IconButton edge="end" onClick={openMenu}>
+                            <MoreVert />
+                        </IconButton>
+                        <Menu onClose={closeMenu} open={Boolean(menuAnchorEl)} anchorEl={menuAnchorEl}>
+                            <MenuItem onClick={handleMenuRename}>Rename</MenuItem>
+                            <MenuItem onClick={handleMenuDelete}>Delete</MenuItem>
+                        </Menu>
+                    </ListItemSecondaryAction>
+                )}
             </ListItem>
             <Backdrop 
                 className={classes.backdrop}

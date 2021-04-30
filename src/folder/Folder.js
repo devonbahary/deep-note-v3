@@ -37,6 +37,10 @@ export const Folder = () => {
         setChildFolders(childFolders.map(f => f.uuid === uuid ? folder : f));
     };
 
+    const deleteChildFolder = (uuid) => {
+        setChildFolders(childFolders.filter(c => c.uuid !== uuid));
+    };
+
     if (!folder) return null;
 
     const goBackFn = folder.parent_folder_uuid ? () => RouterUtil.goToFolder(history, folder.parent_folder_uuid) : null;
@@ -53,6 +57,7 @@ export const Folder = () => {
                             key={childFolder.uuid} 
                             folder={childFolder} 
                             updateChildFolder={updateChildFolder} 
+                            deleteChildFolder={deleteChildFolder}
                         /> 
                     )}
                     {!isAddingNewFolder && <AddFolderListItem onClick={addNewFolder} />}
