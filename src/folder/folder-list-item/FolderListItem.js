@@ -3,22 +3,15 @@ import { useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import FolderIcon from '@material-ui/icons/Folder';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { makeStyles } from '@material-ui/core/styles';
-import { RouterUtil } from '../utilities/RouterUtil';
-import { ApiUtil } from '../utilities/ApiUtil';
-import { ListItemIcon } from '@material-ui/core';
+import { RouterUtil } from '../../utilities/RouterUtil';
+import { ApiUtil } from '../../utilities/ApiUtil';
+import { FolderListItemMenu } from './FolderListItemMenu';
 
 // TODO: how to share with AddFolderListItem
 const useStyles = makeStyles(() => ({
@@ -32,7 +25,7 @@ const useStyles = makeStyles(() => ({
 
 // TODO: confirm want delete, include # of children in confirm
 export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder }) => {
-    const { uuid, name, updated_at } = folder;
+    const { uuid, name, updated_at, child_folder_count } = folder;
 
     const history = useHistory();
 
@@ -83,12 +76,12 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
 
     return (
         <>
-            <ListItem className={classes.folder} divider onClick={navigateToFolder}>
+            <ListItem className={classes.folder} divider>
                 <ListItemAvatar>
                     {isLoading ? (
                         <CircularProgress />
                     ) : (
-                        <Avatar>
+                        <Avatar onClick={navigateToFolder}>
                             <FolderIcon />
                         </Avatar>
                     )}
@@ -106,28 +99,20 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
                         variant="outlined"
                     />
                 ) : (
-                    <ListItemText primary={name || 'untitled'} secondary={formattedUpdatedAt} />
+                    <ListItemText 
+                        onClick={navigateToFolder} 
+                        primary={name || 'untitled'} 
+                        secondary={formattedUpdatedAt} 
+                    />
                 )}
                 {!isLoading && (
-                    <ListItemSecondaryAction>
-                        <IconButton edge="end" onClick={openMenu}>
-                            <MoreVertIcon />
-                        </IconButton>
-                        <Menu onClose={closeMenu} open={Boolean(menuAnchorEl)} anchorEl={menuAnchorEl}>
-                            <MenuItem onClick={handleMenuRename}>
-                                <ListItemIcon>
-                                    <EditIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Rename" />
-                            </MenuItem>
-                            <MenuItem onClick={handleMenuDelete}>
-                                <ListItemIcon>
-                                    <DeleteIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Delete" />
-                            </MenuItem>
-                        </Menu>
-                    </ListItemSecondaryAction>
+                    <FolderListItemMenu 
+                        closeMenu={closeMenu}
+                        handleMenuDelete={handleMenuDelete}
+                        handleMenuRename={handleMenuRename}
+                        menuAnchorEl={menuAnchorEl}
+                        openMenu={openMenu}
+                    />
                 )}
             </ListItem>
             <Backdrop 
