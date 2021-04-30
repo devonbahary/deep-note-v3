@@ -14,15 +14,4 @@ export class BaseMySQLRepository {
             });
         });
     }
-
-    async findOne(id) {
-        const results = await this.query(
-            `
-                SELECT * FROM ${this.tableName} 
-                WHERE id = ?
-            `,
-            [ id ],
-        );
-        return results.length ? results[0] : null;
-    }
 }
