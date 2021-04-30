@@ -33,6 +33,10 @@ export const Folder = () => {
         setIsAddingNewFolder(false);
     }
 
+    const updateChildFolder = (uuid, folder) => {
+        setChildFolders(childFolders.map(f => f.uuid === uuid ? folder : f));
+    };
+
     if (!folder) return null;
 
     const goBackFn = folder.parent_folder_uuid ? () => RouterUtil.goToFolder(history, folder.parent_folder_uuid) : null;
@@ -44,7 +48,13 @@ export const Folder = () => {
             <AppBar goBackFn={goBackFn} title={title} />
             <Content>
                 <List>
-                    {childFolders.map(childFolder => <FolderListItem key={childFolder.uuid} folder={childFolder} /> )}
+                    {childFolders.map(childFolder => 
+                        <FolderListItem
+                            key={childFolder.uuid} 
+                            folder={childFolder} 
+                            updateChildFolder={updateChildFolder} 
+                        /> 
+                    )}
                     {!isAddingNewFolder && <AddFolderListItem onClick={addNewFolder} />}
                 </List>    
             </Content>

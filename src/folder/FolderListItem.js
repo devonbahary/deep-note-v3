@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-export const FolderListItem = ({ folder }) => {
+export const FolderListItem = ({ folder, updateChildFolder }) => {
     const { uuid, name, updated_at } = folder;
 
     const history = useHistory();
@@ -49,10 +49,9 @@ export const FolderListItem = ({ folder }) => {
 
     const handleFolderRenameChange = (e) => setFolderRenameText(e.target.value);
     const handleFolderRenameBlur = async () => {
-        folder.name = folderRenameText;
-        folder.updated_at = new Date();
         setFolderRenameText(null);
-        await ApiUtil.updateFolder(uuid, folder.name)
+        const folder = await ApiUtil.updateFolder(uuid, folderRenameText);
+        updateChildFolder(uuid, folder);
     };
     const handleFolderRenameKeypress = (e) => {
         if (e.key === 'Enter') handleFolderRenameBlur();
