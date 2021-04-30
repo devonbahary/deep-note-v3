@@ -53,6 +53,7 @@ export const FolderListItem = ({ folder, updateChildFolder }) => {
     const handleFolderRenameChange = (e) => setFolderRenameText(e.target.value);
     const handleFolderRenameBlur = async () => {
         setFolderRenameText(null);
+        if (folderRenameText === name) return;
         setIsUpdating(true);
         const folder = await ApiUtil.updateFolder(uuid, folderRenameText);
         updateChildFolder(uuid, folder);
