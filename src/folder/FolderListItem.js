@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -28,7 +27,7 @@ export const FolderListItem = ({ folder }) => {
 
     return (
         <>
-            <ListItem className={classes.folder} onClick={navigateToFolder}>
+            <ListItem className={classes.folder} divider onClick={navigateToFolder}>
                 <ListItemAvatar>
                     <Avatar>
                         <FolderIcon />
@@ -36,7 +35,6 @@ export const FolderListItem = ({ folder }) => {
                 </ListItemAvatar>
                 <ListItemText primary={name || 'untitled'} secondary={formattedUpdatedAt} />
             </ListItem>
-            <Divider />
         </>
     );
 };

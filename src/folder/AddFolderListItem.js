@@ -1,6 +1,5 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -18,16 +17,13 @@ export const AddFolderListItem = ({ onClick }) => {
     const classes = useStyles();
 
     return (
-        <>
-            <ListItem className={classes.folder} onClick={onClick}>
-                <ListItemAvatar>
-                    <Avatar>
-                        <CreateNewFolderIcon />
-                    </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary='Add folder' />
-            </ListItem>
-            <Divider />
-        </>
+        <ListItem className={classes.folder} divider onClick={onClick}>
+            <ListItemAvatar>
+                <Avatar>
+                    <CreateNewFolderIcon />
+                </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary='Add folder' />
+        </ListItem>
     );
 };
