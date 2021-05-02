@@ -13,6 +13,7 @@ export const connection = mysql.createConnection({
     user: MYSQL_USERNAME,
     password: MYSQL_PASSWORD,
     database: MYSQL_DATABASE,
+    timezone: '+00:00', // UTC
 });
  
 connection.connect(err => {

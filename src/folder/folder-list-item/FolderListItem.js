@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { DateTime } from 'luxon';
 import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -29,7 +30,6 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
 
     const history = useHistory();
 
-    const formattedUpdatedAt = new Date(updated_at).toLocaleString();
     const navigateToFolder = () => {
         if (isLoading) return;
         RouterUtil.goToFolder(history, uuid);
@@ -73,6 +73,8 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
     const handleBackdropClick = () => setFolderRenameText(null);
     
     const classes = useStyles();
+
+    const formattedUpdatedAt = DateTime.fromISO(updated_at.replace(/\.000Z$/g, '')).toRelative();
 
     return (
         <>
