@@ -39,7 +39,13 @@ export class FoldersRepository extends BaseMySQLRepository {
     findByParentFolderUUID(parentFolderUUID) {
         return this.query(
             `
-                SELECT uuid, name, parent_folder_uuid, updated_at FROM ${this.tableName}
+                SELECT uuid, name, parent_folder_uuid, updated_at, 
+                (
+                    SELECT COUNT(*)
+                    FROM ${this.tableName}
+                    WHERE parent_folder_uuid_bin = f.uuid_bin
+                ) as child_folder_count
+                FROM ${this.tableName} AS f
                 WHERE parent_folder_uuid_bin = ${UUID_TO_BIN}
             `,
             [ parentFolderUUID ],

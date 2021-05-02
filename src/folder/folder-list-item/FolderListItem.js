@@ -24,9 +24,24 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
+const getSecondaryText = (folder) => {
+    const { updated_at, child_folder_count } = folder;
+    let secondaryText = ``;
+    if (child_folder_count) {
+        secondaryText += `${child_folder_count} folder`
+        if (child_folder_count > 1) secondaryText += `s`;
+        secondaryText += ` | `;
+    }
+
+    const formattedUpdatedAt = DateTime.fromISO(updated_at.replace(/\.000Z$/g, '')).toRelative();
+    secondaryText += formattedUpdatedAt;
+    
+    return secondaryText;
+};
+
 // TODO: confirm want delete, include # of children in confirm
 export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder }) => {
-    const { uuid, name, updated_at, child_folder_count } = folder;
+    const { uuid, name } = folder;
 
     const history = useHistory();
 
@@ -74,7 +89,7 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
     
     const classes = useStyles();
 
-    const formattedUpdatedAt = DateTime.fromISO(updated_at.replace(/\.000Z$/g, '')).toRelative();
+    const secondaryText = getSecondaryText(folder);
 
     return (
         <>
@@ -104,7 +119,7 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
                     <ListItemText 
                         onClick={navigateToFolder} 
                         primary={name || 'untitled'} 
-                        secondary={formattedUpdatedAt} 
+                        secondary={secondaryText} 
                     />
                 )}
                 {!isLoading && (
