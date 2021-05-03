@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { DateTime } from 'luxon';
 import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -10,9 +9,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
 import FolderIcon from '@material-ui/icons/Folder';
 import { makeStyles } from '@material-ui/core/styles';
-import { RouterUtil } from '../../utilities/RouterUtil';
-import { ApiUtil } from '../../utilities/ApiUtil';
 import { FolderListItemMenu } from './FolderListItemMenu';
+import { ApiUtil } from '../../utilities/ApiUtil';
+import { FormatUtil } from '../../utilities/FormatUtil';
+import { RouterUtil } from '../../utilities/RouterUtil';
 
 // TODO: how to share with AddFolderListItem
 const useStyles = makeStyles(() => ({
@@ -41,8 +41,7 @@ const getSecondaryText = (folder) => {
         secondaryText += ` | `;
     }
 
-    const formattedUpdatedAt = DateTime.fromISO(updated_at.replace(/\.000Z$/g, '')).toRelative();
-    secondaryText += formattedUpdatedAt;
+    secondaryText += FormatUtil.getRelativeTimeFromMySQLTime(updated_at);
     
     return secondaryText;
 };

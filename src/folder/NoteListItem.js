@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { DateTime } from 'luxon';
 import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -10,13 +9,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
 import NoteIcon from '@material-ui/icons/Note';
 import { makeStyles } from '@material-ui/core/styles';
-import { RouterUtil } from '../utilities/RouterUtil';
-import { ApiUtil } from '../utilities/ApiUtil';
 import { FolderListItemMenu } from './folder-list-item/FolderListItemMenu';
+import { ApiUtil } from '../utilities/ApiUtil';
+import { FormatUtil } from '../utilities/FormatUtil';
+import { RouterUtil } from '../utilities/RouterUtil';
 
 // TODO: how to share with AddFolderListItem
 const useStyles = makeStyles(() => ({
-    folder: {
+    note: {
         cursor: 'pointer',
     },
     backdrop: {
@@ -24,24 +24,9 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const getSecondaryText = (folder) => {
-    const { updated_at, child_folder_count } = folder;
-    let secondaryText = ``;
-    if (child_folder_count) {
-        secondaryText += `${child_folder_count} folder`
-        if (child_folder_count > 1) secondaryText += `s`;
-        secondaryText += ` | `;
-    }
-
-    const formattedUpdatedAt = DateTime.fromISO(updated_at.replace(/\.000Z$/g, '')).toRelative();
-    secondaryText += formattedUpdatedAt;
-    
-    return secondaryText;
-};
-
 // TODO: confirm want delete, include # of children in confirm
 export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
-    const { id, name, text } = note;
+    const { id, name, updated_at } = note;
 
     const history = useHistory();
 
@@ -89,11 +74,11 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
     
     const classes = useStyles();
 
-    // const secondaryText = getSecondaryText(folder);
+    const secondaryText = FormatUtil.getRelativeTimeFromMySQLTime(updated_at);
 
     return (
         <>
-            <ListItem className={classes.folder} divider>
+            <ListItem className={classes.note} divider>
                 <ListItemAvatar>
                     {isLoading ? (
                         <CircularProgress />
@@ -120,7 +105,7 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
                     <ListItemText 
                         // onClick={navigateToFolder} 
                         primary={name || 'untitled'} 
-                        // secondary={secondaryText} 
+                        secondary={secondaryText} // TODO: reintroduce getSecondaryText and add text.length?
                     />
                 )}
                 {!isLoading && (
