@@ -21,10 +21,10 @@ router.get('/:uuid', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-    const { name, parentFolderUUID } = req.body;
+    const { parentFolderUUID } = req.body;
     
     await RouteUtil.handleAsync(async () => {
-        const folder = await foldersRepository.create(name, parentFolderUUID);
+        const folder = await foldersRepository.create(parentFolderUUID);
         res.send(folder);    
     }, next);
 });

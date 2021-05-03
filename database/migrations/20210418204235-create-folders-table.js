@@ -28,7 +28,7 @@ exports.up = function(db, callback) {
                     19,0,'-'),
                 24,0,'-')
             ) virtual,
-            name VARCHAR(255),
+            name VARCHAR(255) NOT NULL DEFAULT '',
             parent_folder_uuid_bin BINARY(16),
             CONSTRAINT fk_parent_folder_uuid_bin 
             FOREIGN KEY (parent_folder_uuid_bin) REFERENCES folders (uuid_bin)

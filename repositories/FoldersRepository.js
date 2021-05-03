@@ -6,15 +6,15 @@ export class FoldersRepository extends BaseMySQLRepository {
         super('folders');
     }
 
-    async create(name, parentFolderUUID) {
+    async create(parentFolderUUID) {
         const uuid = uuidV1();
 
         await this.query(
             `
-                INSERT INTO ${this.tableName} (uuid_bin, name, parent_folder_uuid_bin)
-                VALUES (${this.UUID_TO_BIN}, ?, ${this.UUID_TO_BIN})
+                INSERT INTO ${this.tableName} (uuid_bin, parent_folder_uuid_bin)
+                VALUES (${this.UUID_TO_BIN}, ${this.UUID_TO_BIN})
             `,
-            [ uuid, name, parentFolderUUID ],
+            [ uuid, parentFolderUUID ],
         );
 
         const newRecord = await this.findOne(uuid);

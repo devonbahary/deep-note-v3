@@ -28,7 +28,7 @@ export const Folder = () => {
     const [ isAddingNewFolder, setIsAddingNewFolder ] = useState(false);
     const addNewFolder = async () => {
         setIsAddingNewFolder(true);
-        const newFolder = await ApiUtil.createFolder(null, uuid);
+        const newFolder = await ApiUtil.createFolder(uuid);
         setChildFolders([ ...childFolders, newFolder ]);
         setIsAddingNewFolder(false);
     }
