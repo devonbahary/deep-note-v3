@@ -22,6 +22,13 @@ export class BaseMySQLRepository {
         });
     }
 
+    async create(sql, values) {
+        const uuid = this.generateUUID();
+        await this.query(sql, [ uuid, ...values ]);
+        const newRecord = await this.findOne(uuid);
+        return newRecord;
+    }
+    
     delete(uuid) {
         return this.query(
             `

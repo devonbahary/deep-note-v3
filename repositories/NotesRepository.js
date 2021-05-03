@@ -6,19 +6,13 @@ export class NotesRepository extends BaseMySQLRepository {
     }
 
     async create(parentFolderUUID) {
-        const uuid = this.generateUUID();
-        
-        await this.query(
+        return super.create(
             `
                 INSERT INTO ${this.tableName} (uuid_bin, parent_folder_uuid_bin, text)
                 VALUES (${this.UUID_TO_BIN}, ${this.UUID_TO_BIN}, ?)
             `,
-            [ uuid, parentFolderUUID, ''],
+            [ parentFolderUUID, '' ],
         );
-
-        const newRecord = await this.findOne(uuid);
-
-        return newRecord;
     }
     
     async findOne(uuid) {
