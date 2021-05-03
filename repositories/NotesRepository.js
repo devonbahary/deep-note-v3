@@ -5,6 +5,12 @@ export class NotesRepository extends BaseMySQLRepository {
         super('notes');
     }
 
+    getSelectQuery() {
+        return `
+            SELECT uuid, parent_folder_uuid, name, text, updated_at FROM ${this.tableName} 
+        `;
+    }
+
     async create(parentFolderUUID) {
         return super.create(
             `
@@ -18,7 +24,7 @@ export class NotesRepository extends BaseMySQLRepository {
     async findOne(uuid) {
         const results = await this.query(
             `
-                SELECT uuid, parent_folder_uuid, name, text, updated_at FROM ${this.tableName} 
+                ${this.getSelectQuery()}
                 ${this.WHERE_UUID_EQUALS}
             `,
             [ uuid ],
@@ -29,8 +35,7 @@ export class NotesRepository extends BaseMySQLRepository {
     findByParentFolderUUID(parentFolderUUID) {
         return this.query(
             `
-                SELECT uuid, parent_folder_uuid, name, text, updated_at 
-                FROM ${this.tableName}
+                ${this.getSelectQuery()}
                 WHERE parent_folder_uuid_bin = ${this.UUID_TO_BIN}
             `,
             [ parentFolderUUID ],
