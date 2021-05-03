@@ -20,6 +20,11 @@ export class ApiUtil {
         await axios.delete(`/api/folders/${uuid}`);
     }
     
+    static async getNote(id) {
+        const { data } = await axios.get(`/api/notes/${id}`);
+        return data;
+    }
+
     static async createNote(parentFolderUUID) {
         const { data } = await axios.post(`/api/notes`, { parentFolderUUID });
         return data;

@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import { Folder } from './folder/Folder';
 import { Home } from './home/Home';
+import { Note } from './note/Note';
 
 const useStyles = makeStyles(() => ({
     content: {
@@ -21,6 +22,9 @@ const App = () => {
             <CssBaseline />
             <Router>
                 <Switch>
+                    <Route path="/notes/:id">
+                        <Note />
+                    </Route>
                     <Route path="/folders/:uuid">
                         <Folder />
                     </Route>

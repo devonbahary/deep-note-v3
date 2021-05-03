@@ -30,10 +30,10 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
 
     const history = useHistory();
 
-    // const navigateToNote = () => {
-    //     if (isLoading) return;
-    //     RouterUtil.goToFolder(history, uuid);
-    // }
+    const navigateToNote = () => {
+        if (isLoading) return;
+        RouterUtil.goToNote(history, id);
+    }
 
     const [ menuAnchorEl, setMenuAnchorEl ] = useState(null);
     const openMenu = (e) => setMenuAnchorEl(e.currentTarget);
@@ -84,8 +84,7 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
                     {isLoading ? (
                         <CircularProgress />
                     ) : (
-                        /* <Avatar onClick={navigateToFolder}> */
-                        <Avatar onClick={() => {}}>
+                        <Avatar onClick={navigateToNote}>
                             <NoteIcon />
                         </Avatar>
                     )}
@@ -104,7 +103,7 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
                     />
                 ) : (
                     <ListItemText 
-                        // onClick={navigateToFolder} 
+                        onClick={navigateToNote} 
                         primary={primaryText} 
                         secondary={secondaryText} // TODO: reintroduce getSecondaryText and add text.length?
                     />
