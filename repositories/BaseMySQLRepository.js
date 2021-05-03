@@ -4,6 +4,8 @@ export class BaseMySQLRepository {
     constructor(tableName) {
         this.tableName = tableName;
         this.connection = connection;
+        this.UUID_TO_BIN = `UNHEX(REPLACE(?, '-', ''))`;
+        this.WHERE_UUID_EQUALS = `WHERE uuid_bin = ${this.UUID_TO_BIN}`;
     }
 
     query(sql, values) {

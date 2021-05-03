@@ -12,14 +12,11 @@ router.get('/:uuid', async (req, res, next) => {
     const { uuid } = req.params;
 
     await RouteUtil.handleAsync(async () => {
-        const { folder, childFolders } = await foldersService.getFolderAndChildFolders(uuid);
+        const response = await foldersService.getFolderAndChildren(uuid);
         
-        if (!folder) return RouteUtil.sendNotFound(res);
+        if (!response.folder) return RouteUtil.sendNotFound(res);
         
-        res.send({
-            folder,
-            childFolders,
-        });    
+        res.send(response);    
     }, next);
 });
 

@@ -1,9 +1,6 @@
 import { v1 as uuidV1 } from 'uuid';
 import { BaseMySQLRepository } from "./BaseMySQLRepository";
 
-const UUID_TO_BIN = `UNHEX(REPLACE(?, '-', ''))`;
-const WHERE_UUID_EQUALS = `WHERE uuid_bin = ${UUID_TO_BIN}`;
-
 export class FoldersRepository extends BaseMySQLRepository {
     constructor() {
         super('folders');
@@ -15,7 +12,7 @@ export class FoldersRepository extends BaseMySQLRepository {
         await this.query(
             `
                 INSERT INTO ${this.tableName} (uuid_bin, name, parent_folder_uuid_bin)
-                VALUES (${UUID_TO_BIN}, ?, ${UUID_TO_BIN})
+                VALUES (${this.UUID_TO_BIN}, ?, ${this.UUID_TO_BIN})
             `,
             [ uuid, name, parentFolderUUID ],
         );
@@ -29,7 +26,7 @@ export class FoldersRepository extends BaseMySQLRepository {
         const results = await this.query(
             `
                 SELECT uuid, name, parent_folder_uuid, updated_at FROM ${this.tableName} 
-                ${WHERE_UUID_EQUALS}
+                ${this.WHERE_UUID_EQUALS}
             `,
             [ uuid ],
         );
@@ -46,7 +43,7 @@ export class FoldersRepository extends BaseMySQLRepository {
                     WHERE parent_folder_uuid_bin = f.uuid_bin
                 ) as child_folder_count
                 FROM ${this.tableName} AS f
-                WHERE parent_folder_uuid_bin = ${UUID_TO_BIN}
+                WHERE parent_folder_uuid_bin = ${this.UUID_TO_BIN}
             `,
             [ parentFolderUUID ],
         );
@@ -57,7 +54,7 @@ export class FoldersRepository extends BaseMySQLRepository {
             `
                 UPDATE ${this.tableName} 
                 SET name = ?
-                ${WHERE_UUID_EQUALS}
+                ${this.WHERE_UUID_EQUALS}
             `,
             [ name, uuid ],
         );
@@ -71,7 +68,7 @@ export class FoldersRepository extends BaseMySQLRepository {
         return this.query(
             `
                 DELETE FROM ${this.tableName}
-                ${WHERE_UUID_EQUALS}
+                ${this.WHERE_UUID_EQUALS}
             `,
             [ uuid ],
         );
