@@ -3,7 +3,7 @@ export class RouterUtil {
         history.push(`/folders/${uuid}`);
     }
 
-    static goToNote(history, id) {
-        history.push(`/notes/${id}`);
+    static goToNote(history, uuid) {
+        history.push(`/notes/${uuid}`);
     }
 }

@@ -1,4 +1,3 @@
-import { v1 as uuidV1 } from 'uuid';
 import { BaseMySQLRepository } from "./BaseMySQLRepository";
 
 export class FoldersRepository extends BaseMySQLRepository {
@@ -7,7 +6,7 @@ export class FoldersRepository extends BaseMySQLRepository {
     }
 
     async create(parentFolderUUID) {
-        const uuid = uuidV1();
+        const uuid = this.generateUUID();
 
         await this.query(
             `
@@ -67,15 +66,5 @@ export class FoldersRepository extends BaseMySQLRepository {
         const updatedRecord = await this.findOne(uuid);
 
         return updatedRecord;
-    }
-
-    delete(uuid) {
-        return this.query(
-            `
-                DELETE FROM ${this.tableName}
-                ${this.WHERE_UUID_EQUALS}
-            `,
-            [ uuid ],
-        );
     }
 }

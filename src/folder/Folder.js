@@ -55,12 +55,12 @@ export const Folder = () => {
         setIsAddingNewNote(false);
     }
 
-    const updateChildNote = (id, note) => {
-        setChildNotes(childNotes.map(n => n.id === id ? note : n));
+    const updateChildNote = (uuid, note) => {
+        setChildNotes(childNotes.map(n => n.uuid === uuid ? note : n));
     };
 
-    const deleteChildNote = (id) => {
-        setChildNotes(childNotes.filter(n => n.id !== id));
+    const deleteChildNote = (uuid) => {
+        setChildNotes(childNotes.filter(n => n.uuid !== uuid));
     }; 
 
     if (!folder) return null;
@@ -85,7 +85,7 @@ export const Folder = () => {
                     {!isAddingNewFolder && <AddFolderListItem onClick={addNewFolder} />}
                     {childNotes.map(note => 
                         <NoteListItem 
-                            key={note.id}
+                            key={note.uuid}
                             note={note}
                             updateChildNote={updateChildNote}
                             deleteChildNote={deleteChildNote}

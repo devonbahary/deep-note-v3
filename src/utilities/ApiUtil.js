@@ -20,8 +20,8 @@ export class ApiUtil {
         await axios.delete(`/api/folders/${uuid}`);
     }
     
-    static async getNote(id) {
-        const { data } = await axios.get(`/api/notes/${id}`);
+    static async getNote(uuid) {
+        const { data } = await axios.get(`/api/notes/${uuid}`);
         return data;
     }
 
@@ -30,12 +30,12 @@ export class ApiUtil {
         return data;
     }
 
-    static async updateNote(id, name) {
-        const { data } = await axios.put(`/api/notes/${id}`, { name });
+    static async updateNote(uuid, name) {
+        const { data } = await axios.put(`/api/notes/${uuid}`, { name });
         return data;
     }
 
-    static async deleteNote(id) {
-        await axios.delete(`/api/notes/${id}`);
+    static async deleteNote(uuid) {
+        await axios.delete(`/api/notes/${uuid}`);
     }
 }

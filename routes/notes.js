@@ -6,11 +6,11 @@ const router = express.Router();
 
 const notesRepository = new NotesRepository();
 
-router.get('/:id', async (req, res, next) => {
-    const { id } = req.params;
+router.get('/:uuid', async (req, res, next) => {
+    const { uuid } = req.params;
 
     await RouteUtil.handleAsync(async () => {
-        const note = await notesRepository.findOne(id);
+        const note = await notesRepository.findOne(uuid);
         if (!note) return RouteUtil.sendNotFound(res);
         
         res.send(note);    
@@ -26,22 +26,22 @@ router.post('/', async (req, res, next) => {
     }, next);
 });
 
-router.put('/:id', async (req, res, next) => {
-    const { id } = req.params;
+router.put('/:uuid', async (req, res, next) => {
+    const { uuid } = req.params;
     const { name, text } = req.body;
 
     await RouteUtil.handleAsync(async () => {
-        const note = await notesRepository.update(id, name, text);
+        const note = await notesRepository.update(uuid, name, text);
         if (!note) return RouteUtil.sendNotFound(res);
         res.send(note);    
     }, next);
 });
 
-router.delete('/:id', async (req, res, next) => {
-    const { id } = req.params;
+router.delete('/:uuid', async (req, res, next) => {
+    const { uuid } = req.params;
 
     await RouteUtil.handleAsync(async () => {
-        await notesRepository.delete(id);
+        await notesRepository.delete(uuid);
         RouteUtil.sendSuccess(res);
     }, next);
 });

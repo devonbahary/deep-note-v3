@@ -5,27 +5,29 @@ export class NotesRepository extends BaseMySQLRepository {
         super('notes');
     }
 
-    async create(parentFolderUUID, name = '', text = '') {
-        const { insertId } = await this.query(
+    async create(parentFolderUUID) {
+        const uuid = this.generateUUID();
+        
+        await this.query(
             `
-                INSERT INTO ${this.tableName} (name, parent_folder_uuid_bin, text)
-                VALUES (?, ${this.UUID_TO_BIN}, ?)
+                INSERT INTO ${this.tableName} (uuid_bin, parent_folder_uuid_bin, text)
+                VALUES (${this.UUID_TO_BIN}, ${this.UUID_TO_BIN}, ?)
             `,
-            [ name, parentFolderUUID, text ],
+            [ uuid, parentFolderUUID, ''],
         );
 
-        const newRecord = await this.findOne(insertId);
+        const newRecord = await this.findOne(uuid);
 
         return newRecord;
     }
     
-    async findOne(id) {
+    async findOne(uuid) {
         const results = await this.query(
             `
-                SELECT id, name, parent_folder_uuid, text, updated_at FROM ${this.tableName} 
-                WHERE id = ?
+                SELECT uuid, parent_folder_uuid, name, text, updated_at FROM ${this.tableName} 
+                ${this.WHERE_UUID_EQUALS}
             `,
-            [ id ],
+            [ uuid ],
         );
         return results.length ? results[0] : null;
     }
@@ -33,7 +35,7 @@ export class NotesRepository extends BaseMySQLRepository {
     findByParentFolderUUID(parentFolderUUID) {
         return this.query(
             `
-                SELECT id, name, parent_folder_uuid, text, updated_at 
+                SELECT uuid, parent_folder_uuid, name, text, updated_at 
                 FROM ${this.tableName}
                 WHERE parent_folder_uuid_bin = ${this.UUID_TO_BIN}
             `,
@@ -41,7 +43,7 @@ export class NotesRepository extends BaseMySQLRepository {
         );
     }
 
-    async update(id, name, text) {
+    async update(uuid, name, text) {
         let sql = `UPDATE ${this.tableName} SET`;
         const values = [];
         
@@ -56,23 +58,13 @@ export class NotesRepository extends BaseMySQLRepository {
             values.push(text);
         }
 
-        sql += ` WHERE id = ?`;
-        values.push(id);
+        sql += ` ${this.WHERE_UUID_EQUALS}`;
+        values.push(uuid);
 
         await this.query(sql, values);
 
-        const updatedRecord = await this.findOne(id);
+        const updatedRecord = await this.findOne(uuid);
 
         return updatedRecord;
-    }
-
-    delete(id) {
-        return this.query(
-            `
-                DELETE FROM ${this.tableName}
-                WHERE id = ?
-            `,
-            [ id ],
-        );
     }
 }

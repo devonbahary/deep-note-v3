@@ -7,19 +7,19 @@ import { FormatUtil } from '../utilities/FormatUtil';
 import { RouterUtil } from '../utilities/RouterUtil';
 
 export const Note = () => {
-    const { id } = useParams();
+    const { uuid } = useParams();
     const history = useHistory();
 
     const [ note, setNote ] = useState(null);
 
     useEffect(() => {
         const getNote = async () => {
-            const note = await ApiUtil.getNote(id);
+            const note = await ApiUtil.getNote(uuid);
             setNote(note);
         }
 
         getNote();
-    }, [ id ]);
+    }, [ uuid ]);
 
     if (!note) return null;
 

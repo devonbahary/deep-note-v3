@@ -1,3 +1,4 @@
+import { v1 as uuidV1 } from 'uuid';
 import { connection } from "../database/mysql-connect";
 
 export class BaseMySQLRepository {
@@ -8,6 +9,10 @@ export class BaseMySQLRepository {
         this.WHERE_UUID_EQUALS = `WHERE uuid_bin = ${this.UUID_TO_BIN}`;
     }
 
+    generateUUID() {
+        return uuidV1();
+    }
+
     query(sql, values) {
         return new Promise((res, rej) => {
             this.connection.query(sql, values, (err, results) => {
@@ -15,5 +20,15 @@ export class BaseMySQLRepository {
                 res(results);
             });
         });
+    }
+
+    delete(uuid) {
+        return this.query(
+            `
+                DELETE FROM ${this.tableName}
+                ${this.WHERE_UUID_EQUALS}
+            `,
+            [ uuid ],
+        );
     }
 }

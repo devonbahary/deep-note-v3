@@ -22,7 +22,7 @@ const App = () => {
             <CssBaseline />
             <Router>
                 <Switch>
-                    <Route path="/notes/:id">
+                    <Route path="/notes/:uuid">
                         <Note />
                     </Route>
                     <Route path="/folders/:uuid">

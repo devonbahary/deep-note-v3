@@ -26,13 +26,13 @@ const useStyles = makeStyles(() => ({
 
 // TODO: confirm want delete, include # of children in confirm
 export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
-    const { id, name, updated_at } = note;
+    const { uuid, name, updated_at } = note;
 
     const history = useHistory();
 
     const navigateToNote = () => {
         if (isLoading) return;
-        RouterUtil.goToNote(history, id);
+        RouterUtil.goToNote(history, uuid);
     }
 
     const [ menuAnchorEl, setMenuAnchorEl ] = useState(null);
@@ -50,8 +50,8 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
 
     const handleMenuDelete = async () => {
         setIsLoading(true);
-        await ApiUtil.deleteNote(id);
-        deleteChildNote(id);
+        await ApiUtil.deleteNote(uuid);
+        deleteChildNote(uuid);
         setIsLoading(false);
     };
 
@@ -62,8 +62,8 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
         setNoteRenameText(null);
         if (noteRenameText === name) return;
         setIsLoading(true);
-        const note = await ApiUtil.updateNote(id, noteRenameText);
-        updateChildNote(id, note);
+        const note = await ApiUtil.updateNote(uuid, noteRenameText);
+        updateChildNote(uuid, note);
         setIsLoading(false);
     };
     const handleNoteRenameKeypress = (e) => {
