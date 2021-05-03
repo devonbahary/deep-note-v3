@@ -54,7 +54,8 @@ export class FoldersRepository extends BaseMySQLRepository {
     }
 
     async update(uuid, name) {
-        await this.query(
+        return super.update(
+            uuid, 
             `
                 UPDATE ${this.tableName} 
                 SET name = ?
@@ -62,9 +63,5 @@ export class FoldersRepository extends BaseMySQLRepository {
             `,
             [ name, uuid ],
         );
-
-        const updatedRecord = await this.findOne(uuid);
-
-        return updatedRecord;
     }
 }

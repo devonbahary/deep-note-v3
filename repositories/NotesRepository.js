@@ -55,10 +55,6 @@ export class NotesRepository extends BaseMySQLRepository {
         sql += ` ${this.WHERE_UUID_EQUALS}`;
         values.push(uuid);
 
-        await this.query(sql, values);
-
-        const updatedRecord = await this.findOne(uuid);
-
-        return updatedRecord;
+        return super.update(uuid, sql, values);
     }
 }

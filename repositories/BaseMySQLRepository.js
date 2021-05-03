@@ -28,6 +28,12 @@ export class BaseMySQLRepository {
         const newRecord = await this.findOne(uuid);
         return newRecord;
     }
+
+    async update(uuid, sql, values) {
+        await this.query(sql, values);
+        const updatedRecord = await this.findOne(uuid);
+        return updatedRecord;
+    }
     
     delete(uuid) {
         return this.query(
