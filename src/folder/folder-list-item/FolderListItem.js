@@ -96,6 +96,7 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
     
     const classes = useStyles();
 
+    const primaryText = FormatUtil.getName(folder);
     const secondaryText = getSecondaryText(folder);
 
     return (
@@ -125,7 +126,7 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
                 ) : (
                     <ListItemText 
                         onClick={navigateToFolder} 
-                        primary={name || 'untitled'} 
+                        primary={primaryText} 
                         secondary={secondaryText} 
                     />
                 )}

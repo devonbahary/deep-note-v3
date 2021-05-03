@@ -74,6 +74,7 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
     
     const classes = useStyles();
 
+    const primaryText = FormatUtil.getName(note);
     const secondaryText = FormatUtil.getRelativeTimeFromMySQLTime(updated_at);
 
     return (
@@ -104,7 +105,7 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
                 ) : (
                     <ListItemText 
                         // onClick={navigateToFolder} 
-                        primary={name || 'untitled'} 
+                        primary={primaryText} 
                         secondary={secondaryText} // TODO: reintroduce getSecondaryText and add text.length?
                     />
                 )}

@@ -5,10 +5,11 @@ import { AppBar } from '../common/AppBar';
 import { Content } from '../common/Content';
 import { AddFolderListItem } from './AddFolderListItem';
 import { FolderListItem } from './folder-list-item/FolderListItem';
-import { RouterUtil } from '../utilities/RouterUtil';
-import { ApiUtil } from '../utilities/ApiUtil';
 import { NoteListItem } from './NoteListItem';
 import { AddNoteListItem } from './AddNoteListItem';
+import { ApiUtil } from '../utilities/ApiUtil';
+import { FormatUtil } from '../utilities/FormatUtil';
+import { RouterUtil } from '../utilities/RouterUtil';
 
 export const Folder = () => {
     const { uuid } = useParams();
@@ -66,7 +67,7 @@ export const Folder = () => {
 
     const goBackFn = folder.parent_folder_uuid ? () => RouterUtil.goToFolder(history, folder.parent_folder_uuid) : null;
 
-    const title = folder.name || 'untitled';
+    const title = FormatUtil.getName(folder);
 
     return (
         <>
