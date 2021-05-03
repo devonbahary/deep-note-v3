@@ -8,11 +8,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
-import FolderIcon from '@material-ui/icons/Folder';
+import NoteIcon from '@material-ui/icons/Note';
 import { makeStyles } from '@material-ui/core/styles';
-import { RouterUtil } from '../../utilities/RouterUtil';
-import { ApiUtil } from '../../utilities/ApiUtil';
-import { FolderListItemMenu } from './FolderListItemMenu';
+import { RouterUtil } from '../utilities/RouterUtil';
+import { ApiUtil } from '../utilities/ApiUtil';
+import { FolderListItemMenu } from './folder-list-item/FolderListItemMenu';
 
 // TODO: how to share with AddFolderListItem
 const useStyles = makeStyles(() => ({
@@ -25,19 +25,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 const getSecondaryText = (folder) => {
-    const { updated_at, child_folder_count, child_note_count } = folder;
-    
+    const { updated_at, child_folder_count } = folder;
     let secondaryText = ``;
-    
     if (child_folder_count) {
         secondaryText += `${child_folder_count} folder`
         if (child_folder_count > 1) secondaryText += `s`;
-        secondaryText += ` | `;
-    }
-    
-    if (child_note_count) {
-        secondaryText += `${child_note_count} note`
-        if (child_note_count > 1) secondaryText += `s`;
         secondaryText += ` | `;
     }
 
@@ -48,56 +40,56 @@ const getSecondaryText = (folder) => {
 };
 
 // TODO: confirm want delete, include # of children in confirm
-export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder }) => {
-    const { uuid, name } = folder;
+export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
+    const { id, name, text } = note;
 
     const history = useHistory();
 
-    const navigateToFolder = () => {
-        if (isLoading) return;
-        RouterUtil.goToFolder(history, uuid);
-    }
+    // const navigateToNote = () => {
+    //     if (isLoading) return;
+    //     RouterUtil.goToFolder(history, uuid);
+    // }
 
     const [ menuAnchorEl, setMenuAnchorEl ] = useState(null);
     const openMenu = (e) => setMenuAnchorEl(e.currentTarget);
     const closeMenu = () => setMenuAnchorEl(null);
 
-    const [ folderRenameText, setFolderRenameText ] = useState(null);
+    const [ noteRenameText, setNoteRenameText ] = useState(null);
 
-    const isRenaming = folderRenameText !== null;
+    const isRenaming = noteRenameText !== null;
 
     const handleMenuRename = () => {
         closeMenu();
-        setTimeout(() => setFolderRenameText(name || ''), 1);
+        setTimeout(() => setNoteRenameText(name || ''), 1);
     };
 
     const handleMenuDelete = async () => {
         setIsLoading(true);
-        await ApiUtil.deleteFolder(uuid);
-        deleteChildFolder(uuid);
+        await ApiUtil.deleteNote(id);
+        deleteChildNote(id);
         setIsLoading(false);
     };
 
     const [ isLoading, setIsLoading ] = useState(false);
 
-    const handleFolderRenameChange = (e) => setFolderRenameText(e.target.value);
-    const handleFolderRenameBlur = async () => {
-        setFolderRenameText(null);
-        if (folderRenameText === name) return;
+    const handleNoteRenameChange = (e) => setNoteRenameText(e.target.value);
+    const handleNoteRenameBlur = async () => {
+        setNoteRenameText(null);
+        if (noteRenameText === name) return;
         setIsLoading(true);
-        const folder = await ApiUtil.updateFolder(uuid, folderRenameText);
-        updateChildFolder(uuid, folder);
+        const note = await ApiUtil.updateNote(id, noteRenameText);
+        updateChildNote(id, note);
         setIsLoading(false);
     };
-    const handleFolderRenameKeypress = (e) => {
-        if (e.key === 'Enter') handleFolderRenameBlur();
+    const handleNoteRenameKeypress = (e) => {
+        if (e.key === 'Enter') handleNoteRenameBlur();
     };
 
-    const handleBackdropClick = () => setFolderRenameText(null);
+    const handleBackdropClick = () => setNoteRenameText(null);
     
     const classes = useStyles();
 
-    const secondaryText = getSecondaryText(folder);
+    // const secondaryText = getSecondaryText(folder);
 
     return (
         <>
@@ -106,8 +98,9 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
                     {isLoading ? (
                         <CircularProgress />
                     ) : (
-                        <Avatar onClick={navigateToFolder}>
-                            <FolderIcon />
+                        /* <Avatar onClick={navigateToFolder}> */
+                        <Avatar onClick={() => {}}>
+                            <NoteIcon />
                         </Avatar>
                     )}
                 </ListItemAvatar>
@@ -116,18 +109,18 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
                         autoFocus 
                         fullWidth
                         label="name"
-                        onBlur={handleFolderRenameBlur}
-                        onChange={handleFolderRenameChange}
-                        onKeyPress={handleFolderRenameKeypress}
-                        placeholder="folder name"
-                        value={folderRenameText}
+                        onBlur={handleNoteRenameBlur}
+                        onChange={handleNoteRenameChange}
+                        onKeyPress={handleNoteRenameKeypress}
+                        placeholder="note name"
+                        value={noteRenameText}
                         variant="outlined"
                     />
                 ) : (
                     <ListItemText 
-                        onClick={navigateToFolder} 
+                        // onClick={navigateToFolder} 
                         primary={name || 'untitled'} 
-                        secondary={secondaryText} 
+                        // secondary={secondaryText} 
                     />
                 )}
                 {!isLoading && (

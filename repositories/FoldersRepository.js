@@ -41,7 +41,12 @@ export class FoldersRepository extends BaseMySQLRepository {
                     SELECT COUNT(*)
                     FROM ${this.tableName}
                     WHERE parent_folder_uuid_bin = f.uuid_bin
-                ) as child_folder_count
+                ) as child_folder_count,
+                (
+                    SELECT COUNT(*)
+                    FROM notes
+                    WHERE parent_folder_uuid_bin = f.uuid_bin
+                ) as child_note_count                
                 FROM ${this.tableName} AS f
                 WHERE parent_folder_uuid_bin = ${this.UUID_TO_BIN}
             `,

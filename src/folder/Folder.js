@@ -7,6 +7,8 @@ import { AddFolderListItem } from './AddFolderListItem';
 import { FolderListItem } from './folder-list-item/FolderListItem';
 import { RouterUtil } from '../utilities/RouterUtil';
 import { ApiUtil } from '../utilities/ApiUtil';
+import { NoteListItem } from './NoteListItem';
+import { AddNoteListItem } from './AddNoteListItem';
 
 export const Folder = () => {
     const { uuid } = useParams();
@@ -14,17 +16,20 @@ export const Folder = () => {
 
     const [ folder, setFolder ] = useState(null);
     const [ childFolders, setChildFolders ] = useState([]);
+    const [ childNotes, setChildNotes ] = useState([]);
 
     useEffect(() => {
         const getFolder = async () => {
-            const { folder, childFolders } = await ApiUtil.getFolder(uuid);
+            const { folder, childFolders, childNotes } = await ApiUtil.getFolder(uuid);
             setFolder(folder);
             setChildFolders(childFolders);
+            setChildNotes(childNotes);
         }
 
         getFolder();
     }, [ uuid ]);
 
+    // TODO: useReducer?
     const [ isAddingNewFolder, setIsAddingNewFolder ] = useState(false);
     const addNewFolder = async () => {
         setIsAddingNewFolder(true);
@@ -38,8 +43,24 @@ export const Folder = () => {
     };
 
     const deleteChildFolder = (uuid) => {
-        setChildFolders(childFolders.filter(c => c.uuid !== uuid));
+        setChildFolders(childFolders.filter(f => f.uuid !== uuid));
     };
+
+    const [ isAddingNewNote, setIsAddingNewNote ] = useState(false);
+    const addNewNote = async () => {
+        setIsAddingNewNote(true);
+        const newNote = await ApiUtil.createNote(uuid);
+        setChildNotes([ ...childNotes, newNote ]);
+        setIsAddingNewNote(false);
+    }
+
+    const updateChildNote = (id, note) => {
+        setChildNotes(childNotes.map(n => n.id === id ? note : n));
+    };
+
+    const deleteChildNote = (id) => {
+        setChildNotes(childNotes.filter(n => n.id !== id));
+    }; 
 
     if (!folder) return null;
 
@@ -52,15 +73,24 @@ export const Folder = () => {
             <AppBar goBackFn={goBackFn} title={title} />
             <Content>
                 <List>
-                    {childFolders.map(childFolder => 
+                    {childFolders.map(folder => 
                         <FolderListItem
-                            key={childFolder.uuid} 
-                            folder={childFolder} 
+                            key={folder.uuid} 
+                            folder={folder} 
                             updateChildFolder={updateChildFolder} 
                             deleteChildFolder={deleteChildFolder}
                         /> 
                     )}
                     {!isAddingNewFolder && <AddFolderListItem onClick={addNewFolder} />}
+                    {childNotes.map(note => 
+                        <NoteListItem 
+                            key={note.id}
+                            note={note}
+                            updateChildNote={updateChildNote}
+                            deleteChildNote={deleteChildNote}
+                        />
+                    )}
+                    {!isAddingNewNote && <AddNoteListItem onClick={addNewNote} />}
                 </List>    
             </Content>
         </>
