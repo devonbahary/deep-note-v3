@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { AppBar } from '../common/AppBar';
 import { Content } from '../common/Content';
+import { NoteEditor } from './NoteEditor';
 import { ApiUtil } from '../utilities/ApiUtil';
 import { FormatUtil } from '../utilities/FormatUtil';
 import { RouterUtil } from '../utilities/RouterUtil';
@@ -31,7 +32,7 @@ export const Note = () => {
         <>
             <AppBar goBackFn={goBackFn} title={title} />
             <Content>
-
+                <NoteEditor note={note} />
             </Content>
         </>
     );

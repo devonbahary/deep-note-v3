@@ -42,24 +42,26 @@ export class NotesRepository extends BaseMySQLRepository {
         );
     }
 
-    async update(uuid, name, text) {
-        let sql = `UPDATE ${this.tableName} SET`;
-        const values = [];
-        
-        if (name) {
-            sql += ` name = ?`;
-            if (text) sql += `,`;
-            values.push(name);
-        } 
-        
-        if (text) {
-            sql += ` text = ?`;
-            values.push(text);
-        }
+    updateName(uuid, name) {
+        return super.update(
+            uuid, 
+            `
+                UPDATE ${this.tableName}
+                SET name = ?
+                ${this.WHERE_UUID_EQUALS}
+            `,
+            [ name, uuid ],
+        );
+    }
 
-        sql += ` ${this.WHERE_UUID_EQUALS}`;
-        values.push(uuid);
-
-        return super.update(uuid, sql, values);
+    updateText(uuid, text) {
+        return this.query(
+            `
+                UPDATE ${this.tableName}
+                SET text = ?
+                ${this.WHERE_UUID_EQUALS}
+            `,
+            [ text, uuid ],
+        );
     }
 }

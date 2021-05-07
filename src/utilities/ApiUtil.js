@@ -30,9 +30,13 @@ export class ApiUtil {
         return data;
     }
 
-    static async updateNote(uuid, name) {
-        const { data } = await axios.put(`/api/notes/${uuid}`, { name });
+    static async updateNoteName(uuid, name) {
+        const { data } = await axios.put(`/api/notes/name/${uuid}`, { name });
         return data;
+    }
+
+    static async updateNoteText(uuid, text) {
+        await axios.put(`/api/notes/text/${uuid}`, { text });
     }
 
     static async deleteNote(uuid) {

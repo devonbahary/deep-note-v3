@@ -26,14 +26,24 @@ router.post('/', async (req, res, next) => {
     }, next);
 });
 
-router.put('/:uuid', async (req, res, next) => {
+router.put('/name/:uuid', async (req, res, next) => {
     const { uuid } = req.params;
-    const { name, text } = req.body;
+    const { name } = req.body;
 
     await RouteUtil.handleAsync(async () => {
-        const note = await notesRepository.update(uuid, name, text);
+        const note = await notesRepository.updateName(uuid, name);
         if (!note) return RouteUtil.sendNotFound(res);
-        res.send(note);    
+        res.send(note); 
+    }, next);
+});
+
+router.put('/text/:uuid', async (req, res, next) => {
+    const { uuid } = req.params;
+    const { text } = req.body;
+
+    await RouteUtil.handleAsync(async () => {
+        await notesRepository.updateText(uuid, text);
+        RouteUtil.sendSuccess(res);
     }, next);
 });
 

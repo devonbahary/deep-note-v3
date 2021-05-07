@@ -62,7 +62,7 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
         setNoteRenameText(null);
         if (noteRenameText === name) return;
         setIsLoading(true);
-        const note = await ApiUtil.updateNote(uuid, noteRenameText);
+        const note = await ApiUtil.updateNoteName(uuid, noteRenameText);
         updateChildNote(uuid, note);
         setIsLoading(false);
     };
