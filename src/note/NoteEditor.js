@@ -6,6 +6,21 @@ import { useDebounce } from '../utilities/react-hooks';
 import 'react-quill/dist/quill.snow.css'; 
 import './note-editor.css';
 
+const modules = {
+    toolbar: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [ 'bold', 'italic', 'underline', 'strike' ],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'align': [] }],
+        [ 'blockquote', 'code-block' ],
+        [ 'link' ],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],
+        [{ 'indent': '-1'}, { 'indent': '+1' }],
+        ['clean'] 
+    ],
+};
+
 export const NoteEditor = ({ note }) => {
     const { uuid } = useParams();
 
@@ -26,6 +41,7 @@ export const NoteEditor = ({ note }) => {
 
     return (
         <ReactQuill 
+            modules={modules}
             onChange={handleChange}
             value={content}
         />
