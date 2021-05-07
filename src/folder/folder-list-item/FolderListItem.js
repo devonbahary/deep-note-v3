@@ -96,7 +96,7 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
     
     const classes = useStyles();
 
-    const primaryText = FormatUtil.getName(folder);
+    const primaryText = FormatUtil.getFolderName(folder);
     const secondaryText = getSecondaryText(folder);
 
     return (

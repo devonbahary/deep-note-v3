@@ -67,7 +67,7 @@ export const Folder = () => {
 
     const goBackFn = folder.parent_folder_uuid ? () => RouterUtil.goToFolder(history, folder.parent_folder_uuid) : null;
 
-    const title = FormatUtil.getName(folder);
+    const title = FormatUtil.getFolderName(folder);
 
     return (
         <>
