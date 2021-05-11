@@ -16,36 +16,18 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db, callback) {
     return db.runSql(`
-        CREATE TABLE  folders (
-            uuid_bin BINARY(16) NOT NULL PRIMARY KEY,
-            uuid VARCHAR(36) GENERATED ALWAYS AS 
-            (
-                insert(
-                    insert(
-                        insert(
-                            insert(hex(uuid_bin),9,0,'-'),
-                        14,0,'-'),
-                    19,0,'-'),
-                24,0,'-')
-            ) virtual,
-            name VARCHAR(255) NOT NULL DEFAULT '',
-            parent_folder_uuid_bin BINARY(16),
-            CONSTRAINT fk_parent_folder_uuid_bin 
-            FOREIGN KEY (parent_folder_uuid_bin) REFERENCES folders (uuid_bin)
-            ON DELETE CASCADE,
-            parent_folder_uuid VARCHAR(36) GENERATED ALWAYS AS 
-            (
-                insert(
-                    insert(
-                        insert(
-                            insert(hex(parent_folder_uuid_bin),9,0,'-'),
-                        14,0,'-'),
-                    19,0,'-'),
-                24,0,'-')
-            ) virtual,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        );
+        CREATE TABLE folders (
+            uuid_bin binary(16) NOT NULL,
+            uuid varchar(36) GENERATED ALWAYS AS (insert(insert(insert(insert(hex(uuid_bin),9,0,'-'),14,0,'-'),19,0,'-'),24,0,'-')) VIRTUAL,
+            name varchar(255) NOT NULL DEFAULT '',
+            parent_folder_uuid_bin binary(16) DEFAULT NULL,
+            parent_folder_uuid varchar(36) GENERATED ALWAYS AS (insert(insert(insert(insert(hex(parent_folder_uuid_bin),9,0,'-'),14,0,'-'),19,0,'-'),24,0,'-')) VIRTUAL,
+            created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (uuid_bin),
+            KEY fk_parent_folder_uuid_bin (parent_folder_uuid_bin),
+            CONSTRAINT fk_parent_folder_uuid_bin FOREIGN KEY (parent_folder_uuid_bin) REFERENCES folders (uuid_bin) ON DELETE CASCADE
+        )
     `, callback);
 };
 
