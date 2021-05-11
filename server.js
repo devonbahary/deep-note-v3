@@ -12,8 +12,8 @@ app.use(express.json())
 
 app.use(express.static('dist'));
 
-app.use('/folders', folders);
-app.use('/notes', notes);
+app.use('/api/folders', folders);
+app.use('/api/notes', notes);
 
 if (process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {
