@@ -1,5 +1,6 @@
 require('dotenv').config();
 import express from 'express';
+import path from "path";
 import './database/mysql-connect';
 import folders from './routes/folders';
 import notes from './routes/notes';
