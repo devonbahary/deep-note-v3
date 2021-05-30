@@ -84,7 +84,7 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
         setFolderRenameText(null);
         if (folderRenameText === name) return;
         setIsLoading(true);
-        const folder = await ApiUtil.updateFolder(uuid, folderRenameText);
+        const folder = await ApiUtil.updateFolderName(uuid, folderRenameText);
         updateChildFolder(uuid, folder);
         setIsLoading(false);
     };

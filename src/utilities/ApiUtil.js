@@ -11,8 +11,8 @@ export class ApiUtil {
         return data;
     }
 
-    static async updateFolder(uuid, name) {
-        const { data } = await axios.put(`/api/folders/${uuid}`, { name });
+    static async updateFolderName(uuid, name) {
+        const { data } = await axios.put(`/api/folders/name/${uuid}`, { name });
         return data;
     }
 

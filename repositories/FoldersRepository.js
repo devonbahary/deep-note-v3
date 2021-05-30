@@ -53,7 +53,7 @@ export class FoldersRepository extends BaseMySQLRepository {
         );
     }
 
-    async update(uuid, name) {
+    async updateName(uuid, name) {
         return super.update(
             uuid, 
             `
