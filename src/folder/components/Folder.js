@@ -1,12 +1,13 @@
 import React, { useEffect, useReducer } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
+import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import { AppBar } from '../../common/AppBar';
 import { Content } from '../../common/Content';
-import { AddFolderListItem } from './AddFolderListItem';
 import { FolderListItem } from './FolderListItem';
 import { NoteListItem } from './NoteListItem';
-import { AddNoteListItem } from './AddNoteListItem';
 import { ApiUtil } from '../../utilities/ApiUtil';
 import { FormatUtil } from '../../utilities/FormatUtil';
 import { RouterUtil } from '../../utilities/RouterUtil';
@@ -52,7 +53,18 @@ export const Folder = () => {
 
     return (
         <>
-            <AppBar goBackFn={goBackFn} title={title} />
+            <AppBar goBackFn={goBackFn} title={title}>
+                {!isLoading && (
+                    <>
+                        <IconButton color="inherit" onClick={addNewFolder}>
+                            <CreateNewFolderIcon />
+                        </IconButton>
+                        <IconButton color="inherit" onClick={addNewNote}>
+                            <NoteAddIcon />
+                        </IconButton>
+                    </>
+                )}
+            </AppBar>
             <Content>
                 <List>
                     {childFolders.map(folder => 
@@ -62,7 +74,6 @@ export const Folder = () => {
                             folder={folder} 
                         /> 
                     )}
-                    {!isLoading && <AddFolderListItem onClick={addNewFolder} />}
                     {childNotes.map(note => 
                         <NoteListItem 
                             key={note.uuid}
@@ -70,7 +81,6 @@ export const Folder = () => {
                             note={note}
                         />
                     )}
-                    {!isLoading && <AddNoteListItem onClick={addNewNote} />}
                 </List>    
             </Content>
         </>
