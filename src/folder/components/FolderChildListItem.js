@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -20,25 +21,64 @@ const useStyles = makeStyles(() => ({
 
 export const FolderChildListItem = (props) => {
     const {
-        isLoading,
-        isRenaming,
         AvatarIcon,
-        avatarOnClick,
-        handleMenuDelete,
-        handleMenuRename,
-        onBlur,
-        onChange,
-        onKeyPress,
+        deleteChildApi,
+        deleteChildState,
+        dispatch,
+        item,
+        navigateFn,
         placeholder,
-        value,
-        onClick,
         primaryText,
         secondaryText,
-        openMenu,
-        closeMenu,
-        menuAnchorEl,
-        clearRenameText,
+        updateChildApi,
+        updateChildState,
     } = props;
+
+    const history = useHistory();
+
+    const [ menuAnchorEl, setMenuAnchorEl ] = useState(null);
+    const openMenu = (e) => setMenuAnchorEl(e.currentTarget);
+    const closeMenu = () => setMenuAnchorEl(null);
+
+    const [ text, setText ] = useState(null);
+
+    const [ isLoading, setIsLoading ] = useState(false);
+
+    const handleChange = (e) => setText(e.target.value);
+
+    const handleBlur = async () => {
+        setText(null);
+        if (text === item.name) return;
+        setIsLoading(true);
+        const folderChild = await updateChildApi(item.uuid, text);
+        dispatch(updateChildState(folderChild))
+        setIsLoading(false);
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') handleBlur();
+    };
+
+    const navigateToItem = () => {
+        if (isLoading) return;
+        navigateFn(history, item.uuid);
+    }
+
+    const handleMenuRename = () => {
+        closeMenu();
+        setTimeout(() => setText(item.name || ''), 1);
+    };
+
+    const handleMenuDelete = async () => {
+        setIsLoading(true);
+        await deleteChildApi(item.uuid);
+        dispatch(deleteChildState(item.uuid));
+        setIsLoading(false);
+    };
+
+    const handleBackdropClick = () => setText(null);
+
+    const isRenaming = text !== null;
 
     const classes = useStyles();
 
@@ -49,7 +89,7 @@ export const FolderChildListItem = (props) => {
                     {isLoading ? (
                         <CircularProgress />
                     ) : (
-                        <Avatar onClick={avatarOnClick}>
+                        <Avatar onClick={navigateToItem}>
                             <AvatarIcon />
                         </Avatar>
                     )}
@@ -59,16 +99,16 @@ export const FolderChildListItem = (props) => {
                         autoFocus 
                         fullWidth
                         label="name"
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        onKeyPress={onKeyPress}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        onKeyPress={handleKeyPress}
                         placeholder={placeholder}
-                        value={value}
+                        value={text}
                         variant="outlined"
                     />
                 ) : (
                     <ListItemText 
-                        onClick={onClick} 
+                        onClick={navigateToItem} 
                         primary={primaryText} 
                         secondary={secondaryText} 
                     />
@@ -86,7 +126,7 @@ export const FolderChildListItem = (props) => {
             <Backdrop
                 className={classes.backdrop}
                 invisible
-                onClick={clearRenameText}
+                onClick={handleBackdropClick}
                 open={isRenaming}
             />
         </>
