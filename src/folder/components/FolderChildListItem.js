@@ -8,7 +8,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import { FolderListItemMenu } from './folder-list-item/FolderListItemMenu';
+import { FolderChildListItemActions } from './FolderChildListItemActions';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -114,7 +114,7 @@ export const FolderChildListItem = (props) => {
                     />
                 )}
                 {!isLoading && (
-                    <FolderListItemMenu 
+                    <FolderChildListItemActions 
                         closeMenu={closeMenu}
                         handleMenuDelete={handleMenuDelete}
                         handleMenuRename={handleMenuRename}

@@ -1,10 +1,10 @@
 import React from 'react';
 import FolderIcon from '@material-ui/icons/Folder';
-import { ApiUtil } from '../../../utilities/ApiUtil';
-import { FormatUtil } from '../../../utilities/FormatUtil';
-import { RouterUtil } from '../../../utilities/RouterUtil';
-import { deleteChildFolder, updateChildFolder } from '../../actions';
-import { FolderChildListItem } from '../FolderChildListItem';
+import { ApiUtil } from '../../utilities/ApiUtil';
+import { FormatUtil } from '../../utilities/FormatUtil';
+import { RouterUtil } from '../../utilities/RouterUtil';
+import { deleteChildFolder, updateChildFolder } from '../actions';
+import { FolderChildListItem } from './FolderChildListItem';
 
 const getSecondaryText = (folder) => {
     const { updated_at, child_folder_count, child_note_count } = folder;

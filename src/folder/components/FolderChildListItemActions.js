@@ -9,7 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-export const FolderListItemMenu = (props) => {
+export const FolderChildListItemActions = (props) => {
     const { closeMenu, handleMenuDelete, handleMenuRename, menuAnchorEl, openMenu, } = props;
     return (
         <ListItemSecondaryAction>

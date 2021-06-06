@@ -4,7 +4,7 @@ import List from '@material-ui/core/List';
 import { AppBar } from '../../common/AppBar';
 import { Content } from '../../common/Content';
 import { AddFolderListItem } from './AddFolderListItem';
-import { FolderListItem } from './folder-list-item/FolderListItem';
+import { FolderListItem } from './FolderListItem';
 import { NoteListItem } from './NoteListItem';
 import { AddNoteListItem } from './AddNoteListItem';
 import { ApiUtil } from '../../utilities/ApiUtil';
