@@ -6,7 +6,7 @@ import { RouterUtil } from '../../utilities/RouterUtil';
 import { deleteChildNote, updateChildNote } from '../actions';
 import { FolderChildListItem } from './FolderChildListItem';
 
-export const NoteListItem = ({ dispatch, note }) => {
+export const FolderChildNote = ({ dispatch, note }) => {
     const primaryText = FormatUtil.getName(note);
     const secondaryText = FormatUtil.getRelativeTimeFromMySQLTime(note.updated_at);
 

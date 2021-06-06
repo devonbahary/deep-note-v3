@@ -29,7 +29,7 @@ const getSecondaryText = (folder) => {
 };
 
 // TODO: confirm want delete, include # of children in confirm
-export const FolderListItem = ({ dispatch, folder }) => {
+export const FolderChildFolder = ({ dispatch, folder }) => {
     const primaryText = FormatUtil.getFolderName(folder);
     const secondaryText = getSecondaryText(folder);
 

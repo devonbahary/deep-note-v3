@@ -6,8 +6,8 @@ import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import { AppBar } from '../../common/AppBar';
 import { Content } from '../../common/Content';
-import { FolderListItem } from './FolderListItem';
-import { NoteListItem } from './NoteListItem';
+import { FolderChildFolder } from './FolderChildFolder';
+import { FolderChildNote } from './FolderChildNote';
 import { ApiUtil } from '../../utilities/ApiUtil';
 import { FormatUtil } from '../../utilities/FormatUtil';
 import { RouterUtil } from '../../utilities/RouterUtil';
@@ -68,14 +68,14 @@ export const Folder = () => {
             <Content>
                 <List>
                     {childFolders.map(folder => 
-                        <FolderListItem
+                        <FolderChildFolder
                             key={folder.uuid} 
                             dispatch={dispatch}
                             folder={folder} 
                         /> 
                     )}
                     {childNotes.map(note => 
-                        <NoteListItem 
+                        <FolderChildNote 
                             key={note.uuid}
                             dispatch={dispatch}
                             note={note}
