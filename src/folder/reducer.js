@@ -1,4 +1,4 @@
-export const FOLDER_ACTION_TYPES = {
+export const ACTION_TYPES = {
     ADD_CHILD_FOLDER: 'ADD_CHILD_FOLDER',
     ADD_CHILD_NOTE: 'ADD_CHILD_NOTE',
     DELETE_CHILD_FOLDER: 'DELETE_CHILD_FOLDER',
@@ -16,9 +16,9 @@ export const initialState = {
     isLoading: false,
 };
 
-export const foldersReducer = (state, action) => {
+export const reducer = (state, action) => {
     switch (action.type) {
-        case FOLDER_ACTION_TYPES.ADD_CHILD_FOLDER:
+        case ACTION_TYPES.ADD_CHILD_FOLDER:
             const { payload: childFolder } = action;
             return {
                 ...state,
@@ -27,7 +27,7 @@ export const foldersReducer = (state, action) => {
                     childFolder,
                 ],
             };
-        case FOLDER_ACTION_TYPES.ADD_CHILD_NOTE:
+        case ACTION_TYPES.ADD_CHILD_NOTE:
             const { payload: childNote } = action;
             return {
                 ...state,
@@ -36,19 +36,19 @@ export const foldersReducer = (state, action) => {
                     childNote,
                 ],
             };
-        case FOLDER_ACTION_TYPES.DELETE_CHILD_FOLDER:
+        case ACTION_TYPES.DELETE_CHILD_FOLDER:
             const { payload: folderUUID } = action;
             return {
                 ...state,
                 childFolders: state.childFolders.filter(childFolder => childFolder.uuid !== folderUUID),
             };
-        case FOLDER_ACTION_TYPES.DELETE_CHILD_NOTE:
+        case ACTION_TYPES.DELETE_CHILD_NOTE:
             const { payload: noteUUID } = action;
             return {
                 ...state,
                 childNotes: state.childNotes.filter(childNote => childNote.uuid !== noteUUID),
             };
-        case FOLDER_ACTION_TYPES.SET_FOLDER:
+        case ACTION_TYPES.SET_FOLDER:
             const { folder, childFolders, childNotes } = action.payload;
             return {
                 ...state,
@@ -56,19 +56,19 @@ export const foldersReducer = (state, action) => {
                 childFolders,
                 childNotes,
             };
-        case FOLDER_ACTION_TYPES.SET_IS_LOADING:
+        case ACTION_TYPES.SET_IS_LOADING:
             const { payload: isLoading } = action;
             return {
                 ...state,
                 isLoading,
             };
-        case FOLDER_ACTION_TYPES.UPDATE_CHILD_FOLDER:
+        case ACTION_TYPES.UPDATE_CHILD_FOLDER:
             const { payload: updateFolder } = action;
             return {
                 ...state,
                 childFolders: state.childFolders.map(childFolder => childFolder.uuid === updateFolder.uuid ? updateFolder : childFolder),
             };
-        case FOLDER_ACTION_TYPES.UPDATE_CHILD_NOTE:
+        case ACTION_TYPES.UPDATE_CHILD_NOTE:
             const { payload: updateNote } = action;
             return {
                 ...state,

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
-import { Folder } from './folder/Folder';
+import { Folder } from './folder/components/Folder';
 import { Home } from './home/Home';
 import { Note } from './note/Note';
 

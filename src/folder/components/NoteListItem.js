@@ -10,10 +10,10 @@ import TextField from '@material-ui/core/TextField';
 import NoteIcon from '@material-ui/icons/Note';
 import { makeStyles } from '@material-ui/core/styles';
 import { FolderListItemMenu } from './folder-list-item/FolderListItemMenu';
-import { ApiUtil } from '../utilities/ApiUtil';
-import { FormatUtil } from '../utilities/FormatUtil';
-import { RouterUtil } from '../utilities/RouterUtil';
-import { deleteChildNote, updateChildNote } from '../folders.actions';
+import { ApiUtil } from '../../utilities/ApiUtil';
+import { FormatUtil } from '../../utilities/FormatUtil';
+import { RouterUtil } from '../../utilities/RouterUtil';
+import { deleteChildNote, updateChildNote } from '../actions';
 
 // TODO: how to share with AddFolderListItem
 const useStyles = makeStyles(() => ({

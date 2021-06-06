@@ -1,23 +1,23 @@
 import React, { useEffect, useReducer } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import List from '@material-ui/core/List';
-import { AppBar } from '../common/AppBar';
-import { Content } from '../common/Content';
+import { AppBar } from '../../common/AppBar';
+import { Content } from '../../common/Content';
 import { AddFolderListItem } from './AddFolderListItem';
 import { FolderListItem } from './folder-list-item/FolderListItem';
 import { NoteListItem } from './NoteListItem';
 import { AddNoteListItem } from './AddNoteListItem';
-import { ApiUtil } from '../utilities/ApiUtil';
-import { FormatUtil } from '../utilities/FormatUtil';
-import { RouterUtil } from '../utilities/RouterUtil';
-import { foldersReducer, initialState } from '../folders.reducer';
-import { addChildFolder, addChildNote, setFolder, setIsLoading } from '../folders.actions';
+import { ApiUtil } from '../../utilities/ApiUtil';
+import { FormatUtil } from '../../utilities/FormatUtil';
+import { RouterUtil } from '../../utilities/RouterUtil';
+import { reducer, initialState } from '../reducer';
+import { addChildFolder, addChildNote, setFolder, setIsLoading } from '../actions';
 
 export const Folder = () => {
     const { uuid } = useParams();
     const history = useHistory();
 
-    const [ state, dispatch ] = useReducer(foldersReducer, initialState);
+    const [ state, dispatch ] = useReducer(reducer, initialState);
 
     const { folder, childFolders, childNotes, isLoading } = state;
 
