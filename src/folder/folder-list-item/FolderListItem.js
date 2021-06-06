@@ -13,6 +13,7 @@ import { FolderListItemMenu } from './FolderListItemMenu';
 import { ApiUtil } from '../../utilities/ApiUtil';
 import { FormatUtil } from '../../utilities/FormatUtil';
 import { RouterUtil } from '../../utilities/RouterUtil';
+import { deleteChildFolder, updateChildFolder } from '../../folders.actions';
 
 // TODO: how to share with AddFolderListItem
 const useStyles = makeStyles(() => ({
@@ -47,7 +48,7 @@ const getSecondaryText = (folder) => {
 };
 
 // TODO: confirm want delete, include # of children in confirm
-export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder }) => {
+export const FolderListItem = ({ dispatch, folder }) => {
     const { uuid, name } = folder;
 
     const history = useHistory();
@@ -73,7 +74,7 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
     const handleMenuDelete = async () => {
         setIsLoading(true);
         await ApiUtil.deleteFolder(uuid);
-        deleteChildFolder(uuid);
+        dispatch(deleteChildFolder(uuid));
         setIsLoading(false);
     };
 
@@ -85,7 +86,7 @@ export const FolderListItem = ({ folder, updateChildFolder, deleteChildFolder })
         if (folderRenameText === name) return;
         setIsLoading(true);
         const folder = await ApiUtil.updateFolderName(uuid, folderRenameText);
-        updateChildFolder(uuid, folder);
+        dispatch(updateChildFolder(folder))
         setIsLoading(false);
     };
     const handleFolderRenameKeypress = (e) => {

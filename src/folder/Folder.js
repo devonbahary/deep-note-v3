@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import List from '@material-ui/core/List';
 import { AppBar } from '../common/AppBar';
@@ -10,58 +10,39 @@ import { AddNoteListItem } from './AddNoteListItem';
 import { ApiUtil } from '../utilities/ApiUtil';
 import { FormatUtil } from '../utilities/FormatUtil';
 import { RouterUtil } from '../utilities/RouterUtil';
+import { foldersReducer, initialState } from '../folders.reducer';
+import { addChildFolder, addChildNote, setFolder, setIsLoading } from '../folders.actions';
 
 export const Folder = () => {
     const { uuid } = useParams();
     const history = useHistory();
 
-    const [ folder, setFolder ] = useState(null);
-    const [ childFolders, setChildFolders ] = useState([]);
-    const [ childNotes, setChildNotes ] = useState([]);
+    const [ state, dispatch ] = useReducer(foldersReducer, initialState);
+
+    const { folder, childFolders, childNotes, isLoading } = state;
 
     useEffect(() => {
         const getFolder = async () => {
-            const { folder, childFolders, childNotes } = await ApiUtil.getFolder(uuid);
-            setFolder(folder);
-            setChildFolders(childFolders);
-            setChildNotes(childNotes);
+            const folder = await ApiUtil.getFolder(uuid);
+            dispatch(setFolder(folder));
         }
 
         getFolder();
     }, [ uuid ]);
 
-    // TODO: useReducer?
-    const [ isAddingNewFolder, setIsAddingNewFolder ] = useState(false);
     const addNewFolder = async () => {
-        setIsAddingNewFolder(true);
+        dispatch(setIsLoading(true));
         const newFolder = await ApiUtil.createFolder(uuid);
-        setChildFolders([ ...childFolders, newFolder ]);
-        setIsAddingNewFolder(false);
+        dispatch(addChildFolder(newFolder));
+        dispatch(setIsLoading(false));
     }
 
-    const updateChildFolder = (uuid, folder) => {
-        setChildFolders(childFolders.map(f => f.uuid === uuid ? folder : f));
-    };
-
-    const deleteChildFolder = (uuid) => {
-        setChildFolders(childFolders.filter(f => f.uuid !== uuid));
-    };
-
-    const [ isAddingNewNote, setIsAddingNewNote ] = useState(false);
     const addNewNote = async () => {
-        setIsAddingNewNote(true);
+        dispatch(setIsLoading(true));
         const newNote = await ApiUtil.createNote(uuid);
-        setChildNotes([ ...childNotes, newNote ]);
-        setIsAddingNewNote(false);
+        dispatch(addChildNote(newNote));
+        dispatch(setIsLoading(false));
     }
-
-    const updateChildNote = (uuid, note) => {
-        setChildNotes(childNotes.map(n => n.uuid === uuid ? note : n));
-    };
-
-    const deleteChildNote = (uuid) => {
-        setChildNotes(childNotes.filter(n => n.uuid !== uuid));
-    }; 
 
     if (!folder) return null;
 
@@ -77,21 +58,19 @@ export const Folder = () => {
                     {childFolders.map(folder => 
                         <FolderListItem
                             key={folder.uuid} 
+                            dispatch={dispatch}
                             folder={folder} 
-                            updateChildFolder={updateChildFolder} 
-                            deleteChildFolder={deleteChildFolder}
                         /> 
                     )}
-                    {!isAddingNewFolder && <AddFolderListItem onClick={addNewFolder} />}
+                    {!isLoading && <AddFolderListItem onClick={addNewFolder} />}
                     {childNotes.map(note => 
                         <NoteListItem 
                             key={note.uuid}
+                            dispatch={dispatch}
                             note={note}
-                            updateChildNote={updateChildNote}
-                            deleteChildNote={deleteChildNote}
                         />
                     )}
-                    {!isAddingNewNote && <AddNoteListItem onClick={addNewNote} />}
+                    {!isLoading && <AddNoteListItem onClick={addNewNote} />}
                 </List>    
             </Content>
         </>

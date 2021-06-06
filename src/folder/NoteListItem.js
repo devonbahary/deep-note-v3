@@ -13,6 +13,7 @@ import { FolderListItemMenu } from './folder-list-item/FolderListItemMenu';
 import { ApiUtil } from '../utilities/ApiUtil';
 import { FormatUtil } from '../utilities/FormatUtil';
 import { RouterUtil } from '../utilities/RouterUtil';
+import { deleteChildNote, updateChildNote } from '../folders.actions';
 
 // TODO: how to share with AddFolderListItem
 const useStyles = makeStyles(() => ({
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 // TODO: confirm want delete, include # of children in confirm
-export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
+export const NoteListItem = ({ dispatch, note }) => {
     const { uuid, name, updated_at } = note;
 
     const history = useHistory();
@@ -51,7 +52,7 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
     const handleMenuDelete = async () => {
         setIsLoading(true);
         await ApiUtil.deleteNote(uuid);
-        deleteChildNote(uuid);
+        dispatch(deleteChildNote(uuid));
         setIsLoading(false);
     };
 
@@ -63,7 +64,7 @@ export const NoteListItem = ({ note, updateChildNote, deleteChildNote }) => {
         if (noteRenameText === name) return;
         setIsLoading(true);
         const note = await ApiUtil.updateNoteName(uuid, noteRenameText);
-        updateChildNote(uuid, note);
+        dispatch(updateChildNote(note));
         setIsLoading(false);
     };
     const handleNoteRenameKeypress = (e) => {
