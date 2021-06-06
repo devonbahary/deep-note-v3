@@ -26,6 +26,7 @@ module.exports = {
         compress: true,
         contentBase: './dist',
         historyApiFallback: true,
+        hot: true,
         proxy: {
             '/api': {
                 target: `http://localhost:3000`,
