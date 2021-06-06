@@ -1,29 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import TextField from '@material-ui/core/TextField';
 import FolderIcon from '@material-ui/icons/Folder';
-import { makeStyles } from '@material-ui/core/styles';
-import { FolderListItemMenu } from './FolderListItemMenu';
 import { ApiUtil } from '../../../utilities/ApiUtil';
 import { FormatUtil } from '../../../utilities/FormatUtil';
 import { RouterUtil } from '../../../utilities/RouterUtil';
 import { deleteChildFolder, updateChildFolder } from '../../actions';
-
-// TODO: how to share with AddFolderListItem
-const useStyles = makeStyles(() => ({
-    folder: {
-        cursor: 'pointer',
-    },
-    backdrop: {
-        zIndex: '1',
-    }
-}));
+import { FolderChildListItem } from '../FolderChildListItem';
 
 const getSecondaryText = (folder) => {
     const { updated_at, child_folder_count, child_note_count } = folder;
@@ -64,6 +46,8 @@ export const FolderListItem = ({ dispatch, folder }) => {
 
     const [ folderRenameText, setFolderRenameText ] = useState(null);
 
+    const clearRenameText = () => setFolderRenameText(null);
+
     const isRenaming = folderRenameText !== null;
 
     const handleMenuRename = () => {
@@ -82,7 +66,7 @@ export const FolderListItem = ({ dispatch, folder }) => {
 
     const handleFolderRenameChange = (e) => setFolderRenameText(e.target.value);
     const handleFolderRenameBlur = async () => {
-        setFolderRenameText(null);
+        clearRenameText();
         if (folderRenameText === name) return;
         setIsLoading(true);
         const folder = await ApiUtil.updateFolderName(uuid, folderRenameText);
@@ -93,60 +77,29 @@ export const FolderListItem = ({ dispatch, folder }) => {
         if (e.key === 'Enter') handleFolderRenameBlur();
     };
 
-    const handleBackdropClick = () => setFolderRenameText(null);
-    
-    const classes = useStyles();
-
     const primaryText = FormatUtil.getFolderName(folder);
     const secondaryText = getSecondaryText(folder);
 
     return (
-        <>
-            <ListItem className={classes.folder} divider>
-                <ListItemAvatar>
-                    {isLoading ? (
-                        <CircularProgress />
-                    ) : (
-                        <Avatar onClick={navigateToFolder}>
-                            <FolderIcon />
-                        </Avatar>
-                    )}
-                </ListItemAvatar>
-                {isRenaming ? (
-                    <TextField 
-                        autoFocus 
-                        fullWidth
-                        label="name"
-                        onBlur={handleFolderRenameBlur}
-                        onChange={handleFolderRenameChange}
-                        onKeyPress={handleFolderRenameKeypress}
-                        placeholder="folder name"
-                        value={folderRenameText}
-                        variant="outlined"
-                    />
-                ) : (
-                    <ListItemText 
-                        onClick={navigateToFolder} 
-                        primary={primaryText} 
-                        secondary={secondaryText} 
-                    />
-                )}
-                {!isLoading && (
-                    <FolderListItemMenu 
-                        closeMenu={closeMenu}
-                        handleMenuDelete={handleMenuDelete}
-                        handleMenuRename={handleMenuRename}
-                        menuAnchorEl={menuAnchorEl}
-                        openMenu={openMenu}
-                    />
-                )}
-            </ListItem>
-            <Backdrop 
-                className={classes.backdrop}
-                invisible
-                onClick={handleBackdropClick}
-                open={isRenaming} 
-            />
-        </>
+        <FolderChildListItem 
+            isLoading={isLoading}
+            isRenaming={isRenaming}
+            AvatarIcon={FolderIcon}
+            avatarOnClick={navigateToFolder}
+            handleMenuDelete={handleMenuDelete}
+            handleMenuRename={handleMenuRename}
+            onBlur={handleFolderRenameBlur}
+            onChange={handleFolderRenameChange}
+            onKeyPress={handleFolderRenameKeypress}
+            placeholder="folder name"
+            value={folderRenameText}
+            onClick={navigateToFolder}
+            primaryText={primaryText}
+            secondaryText={secondaryText}
+            openMenu={openMenu}
+            closeMenu={closeMenu}
+            menuAnchorEl={menuAnchorEl}
+            clearRenameText={clearRenameText}
+        />
     );
 };

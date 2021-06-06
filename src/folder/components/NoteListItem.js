@@ -1,31 +1,12 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import TextField from '@material-ui/core/TextField';
 import NoteIcon from '@material-ui/icons/Note';
-import { makeStyles } from '@material-ui/core/styles';
-import { FolderListItemMenu } from './folder-list-item/FolderListItemMenu';
 import { ApiUtil } from '../../utilities/ApiUtil';
 import { FormatUtil } from '../../utilities/FormatUtil';
 import { RouterUtil } from '../../utilities/RouterUtil';
 import { deleteChildNote, updateChildNote } from '../actions';
+import { FolderChildListItem } from './FolderChildListItem';
 
-// TODO: how to share with AddFolderListItem
-const useStyles = makeStyles(() => ({
-    note: {
-        cursor: 'pointer',
-    },
-    backdrop: {
-        zIndex: '1',
-    }
-}));
-
-// TODO: confirm want delete, include # of children in confirm
 export const NoteListItem = ({ dispatch, note }) => {
     const { uuid, name, updated_at } = note;
 
@@ -41,6 +22,8 @@ export const NoteListItem = ({ dispatch, note }) => {
     const closeMenu = () => setMenuAnchorEl(null);
 
     const [ noteRenameText, setNoteRenameText ] = useState(null);
+
+    const clearRenameText = () => setNoteRenameText(null);
 
     const isRenaming = noteRenameText !== null;
 
@@ -60,7 +43,7 @@ export const NoteListItem = ({ dispatch, note }) => {
 
     const handleNoteRenameChange = (e) => setNoteRenameText(e.target.value);
     const handleNoteRenameBlur = async () => {
-        setNoteRenameText(null);
+        clearRenameText();
         if (noteRenameText === name) return;
         setIsLoading(true);
         const note = await ApiUtil.updateNoteName(uuid, noteRenameText);
@@ -71,60 +54,29 @@ export const NoteListItem = ({ dispatch, note }) => {
         if (e.key === 'Enter') handleNoteRenameBlur();
     };
 
-    const handleBackdropClick = () => setNoteRenameText(null);
-    
-    const classes = useStyles();
-
     const primaryText = FormatUtil.getName(note);
     const secondaryText = FormatUtil.getRelativeTimeFromMySQLTime(updated_at);
 
     return (
-        <>
-            <ListItem className={classes.note} divider>
-                <ListItemAvatar>
-                    {isLoading ? (
-                        <CircularProgress />
-                    ) : (
-                        <Avatar onClick={navigateToNote}>
-                            <NoteIcon />
-                        </Avatar>
-                    )}
-                </ListItemAvatar>
-                {isRenaming ? (
-                    <TextField 
-                        autoFocus 
-                        fullWidth
-                        label="name"
-                        onBlur={handleNoteRenameBlur}
-                        onChange={handleNoteRenameChange}
-                        onKeyPress={handleNoteRenameKeypress}
-                        placeholder="note name"
-                        value={noteRenameText}
-                        variant="outlined"
-                    />
-                ) : (
-                    <ListItemText 
-                        onClick={navigateToNote} 
-                        primary={primaryText} 
-                        secondary={secondaryText} // TODO: reintroduce getSecondaryText and add text.length?
-                    />
-                )}
-                {!isLoading && (
-                    <FolderListItemMenu 
-                        closeMenu={closeMenu}
-                        handleMenuDelete={handleMenuDelete}
-                        handleMenuRename={handleMenuRename}
-                        menuAnchorEl={menuAnchorEl}
-                        openMenu={openMenu}
-                    />
-                )}
-            </ListItem>
-            <Backdrop 
-                className={classes.backdrop}
-                invisible
-                onClick={handleBackdropClick}
-                open={isRenaming} 
-            />
-        </>
+        <FolderChildListItem
+            isLoading={isLoading}
+            isRenaming={isRenaming}
+            AvatarIcon={NoteIcon}
+            avatarOnClick={navigateToNote}
+            handleMenuDelete={handleMenuDelete}
+            handleMenuRename={handleMenuRename}
+            onBlur={handleNoteRenameBlur}
+            onChange={handleNoteRenameChange}
+            onKeyPress={handleNoteRenameKeypress}
+            placeholder="note name"
+            value={noteRenameText}
+            onClick={navigateToNote}
+            primaryText={primaryText}
+            secondaryText={secondaryText}
+            openMenu={openMenu}
+            closeMenu={closeMenu}
+            menuAnchorEl={menuAnchorEl}
+            clearRenameText={clearRenameText}
+        />
     );
 };
