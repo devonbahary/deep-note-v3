@@ -29,7 +29,7 @@ const getSecondaryText = (folder) => {
 };
 
 // TODO: confirm want delete, include # of children in confirm
-export const FolderChildFolder = ({ dispatch, folder }) => {
+export const FolderChildFolder = ({ dispatch, folder, parentFolder, siblingFolders }) => {
     const primaryText = FormatUtil.getFolderName(folder);
     const secondaryText = getSecondaryText(folder);
 
@@ -41,9 +41,12 @@ export const FolderChildFolder = ({ dispatch, folder }) => {
             dispatch={dispatch}
             item={folder}
             navigateFn={RouterUtil.goToFolder}
+            parentFolder={parentFolder}
             placeholder="folder name"
             primaryText={primaryText}
+            reparentChildApi={ApiUtil.reparentFolder}
             secondaryText={secondaryText}
+            siblingFolders={siblingFolders}
             updateChildApi={ApiUtil.updateFolderName}
             updateChildState={updateChildFolder}
         />

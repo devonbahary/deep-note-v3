@@ -6,7 +6,7 @@ import { RouterUtil } from '../../utilities/RouterUtil';
 import { deleteChildNote, updateChildNote } from '../actions';
 import { FolderChildListItem } from './FolderChildListItem';
 
-export const FolderChildNote = ({ dispatch, note }) => {
+export const FolderChildNote = ({ dispatch, note, parentFolder, siblingFolders }) => {
     const primaryText = FormatUtil.getName(note);
     const secondaryText = FormatUtil.getRelativeTimeFromMySQLTime(note.updated_at);
 
@@ -18,9 +18,12 @@ export const FolderChildNote = ({ dispatch, note }) => {
             dispatch={dispatch}
             item={note}
             navigateFn={RouterUtil.goToNote}
+            parentFolder={parentFolder}
             placeholder="note name"
             primaryText={primaryText}
+            reparentChildApi={ApiUtil.reparentNote}
             secondaryText={secondaryText}
+            siblingFolders={siblingFolders}
             updateChildApi={ApiUtil.updateNoteName}
             updateChildState={updateChildNote}
         />

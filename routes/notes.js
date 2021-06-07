@@ -47,6 +47,17 @@ router.put('/text/:uuid', async (req, res, next) => {
     }, next);
 });
 
+router.put('/re-parent/:uuid', async (req, res, next) => {
+    const { uuid } = req.params;
+    const { parentFolderUUID } = req.body;
+
+    await RouteUtil.handleAsync(async () => {
+        const note = await notesRepository.updateParentUUID(uuid, parentFolderUUID);
+        if (!note) return RouteUtil.sendNotFound(res);
+        res.send(note);    
+    }, next);
+});
+
 router.delete('/:uuid', async (req, res, next) => {
     const { uuid } = req.params;
 

@@ -16,6 +16,11 @@ export class ApiUtil {
         return data;
     }
 
+    static async reparentFolder(uuid, parentFolderUUID) {
+        const { data } = await axios.put(`/api/folders/re-parent/${uuid}`, { parentFolderUUID });
+        return data;
+    }
+
     static async deleteFolder(uuid) {
         await axios.delete(`/api/folders/${uuid}`);
     }
@@ -37,6 +42,11 @@ export class ApiUtil {
 
     static async updateNoteText(uuid, text) {
         await axios.put(`/api/notes/text/${uuid}`, { text });
+    }
+
+    static async reparentNote(uuid, parentFolderUUID) {
+        const { data } = await axios.put(`/api/notes/re-parent/${uuid}`, { parentFolderUUID });
+        return data;
     }
 
     static async deleteNote(uuid) {

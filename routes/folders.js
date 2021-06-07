@@ -40,6 +40,17 @@ router.put('/name/:uuid', async (req, res, next) => {
     }, next);
 });
 
+router.put('/re-parent/:uuid', async (req, res, next) => {
+    const { uuid } = req.params;
+    const { parentFolderUUID } = req.body;
+
+    await RouteUtil.handleAsync(async () => {
+        const folder = await foldersRepository.updateParentUUID(uuid, parentFolderUUID);
+        if (!folder) return RouteUtil.sendNotFound(res);
+        res.send(folder);    
+    }, next);
+});
+
 router.delete('/:uuid', async (req, res, next) => {
     const { uuid } = req.params;
 

@@ -27,9 +27,12 @@ export const FolderChildListItem = (props) => {
         dispatch,
         item,
         navigateFn,
+        parentFolder,
         placeholder,
         primaryText,
+        reparentChildApi,
         secondaryText,
+        siblingFolders,
         updateChildApi,
         updateChildState,
     } = props;
@@ -72,6 +75,13 @@ export const FolderChildListItem = (props) => {
     const handleMenuDelete = async () => {
         setIsLoading(true);
         await deleteChildApi(item.uuid);
+        dispatch(deleteChildState(item.uuid));
+        setIsLoading(false);
+    };
+    
+    const handleReparent = async (parentUUID) => {
+        setIsLoading(true);
+        await reparentChildApi(item.uuid, parentUUID);
         dispatch(deleteChildState(item.uuid));
         setIsLoading(false);
     };
@@ -118,8 +128,12 @@ export const FolderChildListItem = (props) => {
                         closeMenu={closeMenu}
                         handleMenuDelete={handleMenuDelete}
                         handleMenuRename={handleMenuRename}
+                        handleReparent={handleReparent}
+                        item={item}
                         menuAnchorEl={menuAnchorEl}
                         openMenu={openMenu}
+                        parentFolder={parentFolder}
+                        siblingFolders={siblingFolders}
                     />
                 )}
             </ListItem>

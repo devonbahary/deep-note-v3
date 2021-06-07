@@ -67,11 +67,13 @@ export const Folder = () => {
             </AppBar>
             <Content>
                 <List>
-                    {childFolders.map(folder => 
+                    {childFolders.map(childFolder => 
                         <FolderChildFolder
-                            key={folder.uuid} 
+                            key={childFolder.uuid} 
                             dispatch={dispatch}
-                            folder={folder} 
+                            folder={childFolder} 
+                            parentFolder={folder}
+                            siblingFolders={childFolders}
                         /> 
                     )}
                     {childNotes.map(note => 
@@ -79,6 +81,8 @@ export const Folder = () => {
                             key={note.uuid}
                             dispatch={dispatch}
                             note={note}
+                            parentFolder={folder}
+                            siblingFolders={childFolders}
                         />
                     )}
                 </List>    

@@ -34,6 +34,18 @@ export class BaseMySQLRepository {
         const updatedRecord = await this.findOne(uuid);
         return updatedRecord;
     }
+
+    async updateParentUUID(uuid, parentUUID) {
+        return this.update(
+            uuid, 
+            `
+                UPDATE ${this.tableName} 
+                SET parent_folder_uuid_bin = ${this.UUID_TO_BIN}
+                ${this.WHERE_UUID_EQUALS}
+            `,
+            [ parentUUID, uuid ],
+        )
+    }
     
     delete(uuid) {
         return this.query(
