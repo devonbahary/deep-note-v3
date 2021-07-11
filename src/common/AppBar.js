@@ -21,7 +21,7 @@ export const AppBar = ({ children, goBackFn, title }) => {
     const iconButtonClassName = goBackFn ? null : classes.invisible;
 
     return (
-        <MaterialUIAppBar position="static">
+        <MaterialUIAppBar position="sticky">
             <Toolbar className={classes.root} variant="dense">
                 <IconButton className={iconButtonClassName} color="inherit" onClick={goBackFn}>
                     <ArrowBack />
