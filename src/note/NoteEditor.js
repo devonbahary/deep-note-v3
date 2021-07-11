@@ -46,6 +46,7 @@ export const NoteEditor = ({ note }) => {
         <ReactQuill 
             modules={modules}
             onChange={handleChange}
+            placeholder="Write your note.."
             value={content}
         />
     );
