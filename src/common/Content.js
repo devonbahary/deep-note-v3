@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
     content: {
-        height: '100vh',
+        height: 'calc(100vh - 48px)',
         overflow: 'auto',
     },
 }));
