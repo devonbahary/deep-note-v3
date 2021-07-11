@@ -7,6 +7,9 @@ import 'react-quill/dist/quill.snow.css';
 import './note-editor.css';
 
 const modules = {
+    clipboard: {
+        matchVisual: false, // https://stackoverflow.com/questions/43748108/how-to-keep-quill-from-inserting-blank-paragraphs-pbr-p-before-heading
+    },
     toolbar: [
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         [ 'bold', 'italic', 'underline', 'strike' ],
