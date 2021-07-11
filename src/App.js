@@ -18,7 +18,7 @@ const theme = createMuiTheme({
         },
         secondary: generatePalette('#7DB19F'),
         action: generatePalette('#BC7588'),
-        info: generatePalette('#13121B'),
+        info: generatePalette('#679C9B'),
     },
 });
 
