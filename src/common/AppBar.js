@@ -4,33 +4,30 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        padding: 0,
-    },
-    invisible: {
-        visibility: 'hidden',
-    },
+const StyledMaterialUIAppBar = styled(MaterialUIAppBar)(({ theme }) => ({
+    background: theme.palette.primary[900],
 }));
 
-export const AppBar = ({ children, goBackFn, title }) => {
-    const classes = useStyles();
+const StyledToolbar = styled(Toolbar)({
+    padding: 0,
+});
 
-    const iconButtonClassName = goBackFn ? null : classes.invisible;
+export const AppBar = ({ children, goBackFn, title }) => {
+    const iconButtonStyles = goBackFn ? null : { visibility: 'hidden' };
 
     return (
-        <MaterialUIAppBar position="sticky">
-            <Toolbar className={classes.root} variant="dense">
-                <IconButton className={iconButtonClassName} color="inherit" onClick={goBackFn}>
+        <StyledMaterialUIAppBar position="sticky">
+            <StyledToolbar variant="dense">
+                <IconButton color="inherit" onClick={goBackFn} style={iconButtonStyles}>
                     <ArrowBack />
                 </IconButton>
                 <Typography variant="h6" style={{flex: 1 }}>
                     {title}
                 </Typography>
                 {children}
-            </Toolbar>
-        </MaterialUIAppBar>
+            </StyledToolbar>
+        </StyledMaterialUIAppBar>
     );
 };

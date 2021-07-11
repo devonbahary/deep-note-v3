@@ -7,16 +7,16 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@material-ui/core/styles';
 import { FolderChildListItemActions } from './FolderChildListItemActions';
 
-const useStyles = makeStyles(() => ({
-    root: {
-        cursor: 'pointer',
-    },
-    backdrop: {
-        zIndex: 1,
-    },
+const StyledBackdrop = styled(Backdrop)({
+    zIndex: 1,
+});
+
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+    cursor: 'pointer',
+    borderBottom: `1px solid ${theme.palette.primary[100]}`
 }));
 
 export const FolderChildListItem = (props) => {
@@ -90,11 +90,9 @@ export const FolderChildListItem = (props) => {
 
     const isRenaming = text !== null;
 
-    const classes = useStyles();
-
     return (
         <>
-            <ListItem className={classes.root} divider>
+            <StyledListItem divider>
                 <ListItemAvatar>
                     {isLoading ? (
                         <CircularProgress />
@@ -136,9 +134,8 @@ export const FolderChildListItem = (props) => {
                         siblingFolders={siblingFolders}
                     />
                 )}
-            </ListItem>
-            <Backdrop
-                className={classes.backdrop}
+            </StyledListItem>
+            <StyledBackdrop
                 invisible
                 onClick={handleBackdropClick}
                 open={isRenaming}
