@@ -7,7 +7,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import { styled } from '@material-ui/core/styles';
 
 const StyledMaterialUIAppBar = styled(MaterialUIAppBar)(({ theme }) => ({
-    background: theme.palette.primary[900],
+    background: theme.palette.background.dark,
 }));
 
 const StyledToolbar = styled(Toolbar)({

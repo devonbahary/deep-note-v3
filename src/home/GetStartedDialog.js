@@ -8,6 +8,17 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import FolderIcon from '@material-ui/icons/Folder';
+import { styled } from '@material-ui/core';
+
+const StyledDialogTitle = styled(DialogTitle)(({ theme }) => ({
+    color: theme.palette.primary.main,
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+    '& .MuiSvgIcon-root': {
+        fill: theme.palette.primary.main,
+    },
+}));
 
 export const GetStartedDialog = ({ 
     folderUUID,
@@ -26,12 +37,12 @@ export const GetStartedDialog = ({
 
     return (
         <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Get Started</DialogTitle>
+            <StyledDialogTitle id="form-dialog-title">Get Started</StyledDialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Enter the UUID of a folder you want to navigate to or create a new one.
+                    Create a new folder or enter the folder ID of an existing one.
                 </DialogContentText>
-                <TextField
+                <StyledTextField
                     id="input-with-icon-textfield"
                     fullWidth
                     InputProps={{
@@ -41,7 +52,7 @@ export const GetStartedDialog = ({
                             </InputAdornment>
                         ),
                     }}
-                    label="Folder UUID"
+                    label="Folder ID"
                     onChange={handleFolderUUIDChange}
                     onKeyPress={handleTextFieldKeyPress}
                     value={folderUUID}
@@ -54,10 +65,10 @@ export const GetStartedDialog = ({
                     disabled={isCreateNewFolderButtonDisabled} 
                     onClick={handleCreateNewFolder}
                 >
-                    Create A New Folder
+                    Create New Folder
                 </Button>
                 <Button 
-                    color="primary" 
+                    color="primary"
                     disabled={isNavigateButtonDisabled} 
                     onClick={handleNavigate} 
                     variant="contained"

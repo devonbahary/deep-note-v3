@@ -7,18 +7,28 @@ import { Folder } from './folder/components/Folder';
 import { Home } from './home/Home';
 import { Note } from './note/Note';
 
-const generatePalette = (color) => ({ 500: color, main: color });
-
 const theme = createMuiTheme({
     palette: {
         primary: {
-            100: '#D8D7E3',
-            500: '#4B4A54',
-            900: '#13121B',
+            contrastText: '#FFFFFF',
+            main: '#7DB19F',
         },
-        secondary: generatePalette('#7DB19F'),
-        action: generatePalette('#BC7588'),
-        info: generatePalette('#679C9B'),
+        secondary: {
+            main: '#D8D7E3',
+        },
+        error: {
+            main: '#BC7588',
+        },
+        background: {
+            dark: '#13121B',
+            default: '#FFFFFF',
+            paper: '#4B4A54',
+        },
+        text: {
+            primary: '#FFFFFF',
+            secondary: 'rgba(255, 255, 255, 0.7)',
+            disabled: 'rgba(255, 255, 255, 0.5)',
+        },
     },
 });
 

@@ -53,7 +53,7 @@ export const Home = () => {
                     </Backdrop>
                 ) : (
                     <div className={classes.home}>
-                        <Button color="primary" onClick={openDialog} variant="outlined">
+                        <Button color="primary" onClick={openDialog} variant="contained">
                             Get Started
                         </Button>
                         <GetStartedDialog 
