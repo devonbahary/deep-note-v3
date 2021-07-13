@@ -69,7 +69,7 @@ export const FolderChildListItemActions = (props) => {
                     return (
                         <MenuItem key={idx} onClick={onClick}>
                             <ListItemIcon>
-                                <Icon />
+                                <Icon color="primary" />
                             </ListItemIcon>
                             <ListItemText primary={text} />
                             {subMenu}
