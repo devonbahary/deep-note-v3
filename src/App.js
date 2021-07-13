@@ -28,6 +28,9 @@ const theme = createMuiTheme({
             primary: '#FFFFFF',
             secondary: 'rgba(255, 255, 255, 0.7)',
             disabled: 'rgba(255, 255, 255, 0.5)',
+            primaryDark: 'rgba(0, 0, 0, 0.87)',
+            secondaryDark: 'rgba(0, 0, 0, 0.54)',
+            disabledDark: 'rgba(0, 0, 0, 0.38)',
         },
     },
 });

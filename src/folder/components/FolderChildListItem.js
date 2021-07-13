@@ -15,8 +15,13 @@ const StyledBackdrop = styled(Backdrop)({
 });
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
+    '& .MuiListItemText-primary': {
+        color: theme.palette.text.primaryDark,
+    },
+    '& .MuiListItemText-secondary': {
+        color: theme.palette.text.secondaryDark,
+    },
     cursor: 'pointer',
-    borderBottom: `1px solid ${theme.palette.primary[100]}`
 }));
 
 export const FolderChildListItem = (props) => {
