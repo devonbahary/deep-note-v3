@@ -10,6 +10,12 @@ import TextField from '@material-ui/core/TextField';
 import { styled } from '@material-ui/core/styles';
 import { FolderChildListItemActions } from './FolderChildListItemActions';
 
+const StyledAvatar = styled(Avatar)(({ theme }) => ({
+    '&.MuiAvatar-colorDefault': {
+        backgroundColor: theme.palette.primary.main,
+    },
+}));
+
 const StyledBackdrop = styled(Backdrop)({
     zIndex: 1,
 });
@@ -102,9 +108,9 @@ export const FolderChildListItem = (props) => {
                     {isLoading ? (
                         <CircularProgress />
                     ) : (
-                        <Avatar onClick={navigateToItem}>
+                        <StyledAvatar onClick={navigateToItem}>
                             <AvatarIcon />
-                        </Avatar>
+                        </StyledAvatar>
                     )}
                 </ListItemAvatar>
                 {isRenaming ? (
