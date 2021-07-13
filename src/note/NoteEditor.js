@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactQuill from 'react-quill';
+import { styled } from '@material-ui/core';
 import { ApiUtil } from '../utilities/ApiUtil';
 import { useDebounce } from '../utilities/react-hooks';
 import 'react-quill/dist/quill.snow.css'; 
-import './note-editor.css';
 
 const modules = {
     clipboard: {
@@ -23,6 +23,26 @@ const modules = {
         ['clean'] 
     ],
 };
+
+const StyledReactQuill = styled(ReactQuill)(({ theme }) => ({
+    color: theme.palette.text.primaryDark,
+    '&.quill': {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+    },
+    '&.quill .ql-toolbar.ql-snow': {
+        border: 'none',
+        borderBottom: `1px solid ${theme.palette.divider}`,
+    },
+    '&.quill .ql-container.ql-snow': {
+        flex: 1,
+        border: 'none',
+        fontFamily: 'inherit',
+        fontSize: '16px',
+        overflowY: 'scroll',
+    },
+}));
 
 export const NoteEditor = ({ note }) => {
     const { uuid } = useParams();
@@ -43,7 +63,7 @@ export const NoteEditor = ({ note }) => {
     }
 
     return (
-        <ReactQuill 
+        <StyledReactQuill 
             modules={modules}
             onChange={handleChange}
             placeholder="Write your note.."
