@@ -20,14 +20,17 @@ const StyledBackdrop = styled(Backdrop)({
     zIndex: 1,
 });
 
-const StyledListItem = styled(ListItem)(({ theme }) => ({
+const StyledListItem = styled(ListItem)({
+    cursor: 'pointer',
+});
+
+const StyledListItemText = styled(ListItemText)(({ theme }) => ({
     '& .MuiListItemText-primary': {
         color: theme.palette.text.primaryDark,
     },
     '& .MuiListItemText-secondary': {
         color: theme.palette.text.secondaryDark,
     },
-    cursor: 'pointer',
 }));
 
 export const FolderChildListItem = (props) => {
@@ -126,7 +129,7 @@ export const FolderChildListItem = (props) => {
                         variant="outlined"
                     />
                 ) : (
-                    <ListItemText 
+                    <StyledListItemText 
                         onClick={navigateToItem} 
                         primary={primaryText} 
                         secondary={secondaryText} 
