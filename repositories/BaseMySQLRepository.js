@@ -35,7 +35,7 @@ export class BaseMySQLRepository {
         return updatedRecord;
     }
 
-    async updateParentUUID(uuid, parentUUID) {
+    updateParentUUID(uuid, parentUUID) {
         return this.update(
             uuid, 
             `
