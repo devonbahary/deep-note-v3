@@ -65,14 +65,13 @@ export const FolderChildListItemActions = (props) => {
             </IconButton>
             <Menu onClose={closeMenu} open={Boolean(menuAnchorEl)} anchorEl={menuAnchorEl}>
                 {menuItems.map((menuItem, idx) => {
-                    const { Icon, onClick, subMenu, text } = menuItem;
+                    const { Icon, onClick, text } = menuItem;
                     return (
                         <MenuItem key={idx} onClick={onClick}>
                             <ListItemIcon>
                                 <Icon color="primary" />
                             </ListItemIcon>
                             <ListItemText primary={text} />
-                            {subMenu}
                         </MenuItem>
                     );
                 })}
