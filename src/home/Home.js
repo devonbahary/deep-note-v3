@@ -31,7 +31,7 @@ export const Home = () => {
     const [ isLoadingNewFolder, setIsLoadingNewFolder ] = useState(false);
     const handleCreateNewFolder = async () => {
         setIsLoadingNewFolder(true);
-        const folder = await ApiUtil.createFolder();
+        const folder = await ApiUtil.createFolder(undefined, '');
         RouterUtil.goToFolder(history, folder.uuid);
     }
     
