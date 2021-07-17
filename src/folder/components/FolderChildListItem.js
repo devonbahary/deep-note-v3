@@ -34,6 +34,12 @@ const StyledListItemText = styled(ListItemText)(({ theme }) => ({
     },
 }));
 
+const StyledTextField = styled(TextField)(({ theme }) => ({
+    '& .MuiOutlinedInput-input': {
+        color: theme.palette.text.primaryDark,
+    },
+}));
+
 export const FolderChildListItem = (props) => {
     const {
         AvatarIcon,
@@ -119,7 +125,7 @@ export const FolderChildListItem = (props) => {
                     )}
                 </ListItemAvatar>
                 {isRenaming ? (
-                    <TextField 
+                    <StyledTextField 
                         autoFocus 
                         fullWidth
                         label="name"
