@@ -6,8 +6,8 @@ export class ApiUtil {
         return data;
     }
 
-    static async createFolder(parentFolderUUID) {
-        const { data } = await axios.post(`/api/folders`, { parentFolderUUID });
+    static async createFolder(parentFolderUUID, name) {
+        const { data } = await axios.post(`/api/folders`, { parentFolderUUID, name });
         return data;
     }
 
@@ -30,8 +30,8 @@ export class ApiUtil {
         return data;
     }
 
-    static async createNote(parentFolderUUID) {
-        const { data } = await axios.post(`/api/notes`, { parentFolderUUID });
+    static async createNote(parentFolderUUID, name) {
+        const { data } = await axios.post(`/api/notes`, { parentFolderUUID, name });
         return data;
     }
 

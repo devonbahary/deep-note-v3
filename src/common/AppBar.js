@@ -14,7 +14,7 @@ const StyledToolbar = styled(Toolbar)({
     padding: 0,
 });
 
-export const AppBar = ({ children, goBackFn, title }) => {
+export const AppBar = ({ goBackFn, title }) => {
     const iconButtonStyles = goBackFn ? null : { visibility: 'hidden' };
 
     return (
@@ -26,7 +26,6 @@ export const AppBar = ({ children, goBackFn, title }) => {
                 <Typography variant="h6" style={{flex: 1 }}>
                     {title}
                 </Typography>
-                {children}
             </StyledToolbar>
         </StyledMaterialUIAppBar>
     );

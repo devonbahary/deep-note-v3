@@ -11,13 +11,13 @@ export class NotesRepository extends BaseMySQLRepository {
         `;
     }
 
-    async create(parentFolderUUID) {
+    async create(parentFolderUUID, name) {
         return super.create(
             `
-                INSERT INTO ${this.tableName} (uuid_bin, parent_folder_uuid_bin, text)
-                VALUES (${this.UUID_TO_BIN}, ${this.UUID_TO_BIN}, ?)
+                INSERT INTO ${this.tableName} (uuid_bin, parent_folder_uuid_bin, text, name)
+                VALUES (${this.UUID_TO_BIN}, ${this.UUID_TO_BIN}, ?, ?)
             `,
-            [ parentFolderUUID, '' ],
+            [ parentFolderUUID, '', name ],
         );
     }
     

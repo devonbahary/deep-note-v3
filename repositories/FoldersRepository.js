@@ -22,13 +22,13 @@ export class FoldersRepository extends BaseMySQLRepository {
         `;
     }
 
-    create(parentFolderUUID) {
+    create(parentFolderUUID, name) {
         return super.create(
             `
-                INSERT INTO ${this.tableName} (uuid_bin, parent_folder_uuid_bin)
-                VALUES (${this.UUID_TO_BIN}, ${this.UUID_TO_BIN})
+                INSERT INTO ${this.tableName} (uuid_bin, parent_folder_uuid_bin, name)
+                VALUES (${this.UUID_TO_BIN}, ${this.UUID_TO_BIN}, ?)
             `,
-            [ parentFolderUUID ],
+            [ parentFolderUUID, name ],
         );
     }
 
