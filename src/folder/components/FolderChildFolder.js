@@ -47,6 +47,7 @@ export const FolderChildFolder = ({ dispatch, folder, parentFolder, siblingFolde
             reparentChildApi={ApiUtil.reparentFolder}
             secondaryText={secondaryText}
             siblingFolders={siblingFolders}
+            type="folder"
             updateChildApi={ApiUtil.updateFolderName}
             updateChildState={updateChildFolder}
         />

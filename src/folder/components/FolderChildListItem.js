@@ -10,9 +10,10 @@ import TextField from '@material-ui/core/TextField';
 import { styled } from '@material-ui/core/styles';
 import { FolderChildListItemActions } from './FolderChildListItemActions';
 
-const StyledAvatar = styled(Avatar)(({ theme }) => ({
+const StyledAvatar = styled(Avatar)(({ theme, type }) => ({
     '&.MuiAvatar-colorDefault': {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: type === 'folder' ? theme.palette.primary.main : 'transparent',
+        color: type === 'folder' ? 'inherit' : theme.palette.primary.main,
     },
 }));
 
@@ -47,6 +48,7 @@ export const FolderChildListItem = (props) => {
         reparentChildApi,
         secondaryText,
         siblingFolders,
+        type,
         updateChildApi,
         updateChildState,
     } = props;
@@ -111,7 +113,7 @@ export const FolderChildListItem = (props) => {
                     {isLoading ? (
                         <CircularProgress />
                     ) : (
-                        <StyledAvatar onClick={navigateToItem}>
+                        <StyledAvatar onClick={navigateToItem} type={type}>
                             <AvatarIcon />
                         </StyledAvatar>
                     )}
