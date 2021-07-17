@@ -7,7 +7,7 @@ export class NotesRepository extends BaseMySQLRepository {
 
     getSelectQuery() {
         return `
-            SELECT uuid, parent_folder_uuid, name, text, updated_at FROM ${this.tableName} 
+            SELECT uuid, parent_folder_uuid, name, text, color, updated_at FROM ${this.tableName} 
         `;
     }
 

@@ -26,6 +26,17 @@ router.post('/', async (req, res, next) => {
     }, next);
 });
 
+router.put('/color/:uuid', async (req, res, next) => {
+    const { uuid } = req.params;
+    const { color } = req.body;
+
+    await RouteUtil.handleAsync(async () => {
+        const note = await notesRepository.updateColor(uuid, color);
+        if (!note) return RouteUtil.sendNotFound(res);
+        res.send(note); 
+    }, next);
+});
+
 router.put('/name/:uuid', async (req, res, next) => {
     const { uuid } = req.params;
     const { name } = req.body;

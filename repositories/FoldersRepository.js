@@ -7,7 +7,7 @@ export class FoldersRepository extends BaseMySQLRepository {
 
     getSelectQuery() {
         return `
-            SELECT uuid, name, parent_folder_uuid, updated_at, 
+            SELECT uuid, name, parent_folder_uuid, color, updated_at, 
             (
                 SELECT COUNT(*)
                 FROM ${this.tableName}

@@ -47,6 +47,18 @@ export class BaseMySQLRepository {
         )
     }
 
+    updateColor(uuid, color) {
+        return super.update(
+            uuid, 
+            `
+                UPDATE ${this.tableName} 
+                SET color = ?
+                ${this.WHERE_UUID_EQUALS}
+            `,
+            [ color, uuid ],
+        );
+    }
+
     updateName(uuid, name) {
         return super.update(
             uuid, 

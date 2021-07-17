@@ -40,6 +40,17 @@ router.put('/name/:uuid', async (req, res, next) => {
     }, next);
 });
 
+router.put('/color/:uuid', async (req, res, next) => {
+    const { uuid } = req.params;
+    const { color } = req.body;
+
+    await RouteUtil.handleAsync(async () => {
+        const folder = await foldersRepository.updateColor(uuid, color);
+        if (!folder) return RouteUtil.sendNotFound(res);
+        res.send(folder);    
+    }, next);
+});
+
 router.put('/re-parent/:uuid', async (req, res, next) => {
     const { uuid } = req.params;
     const { parentFolderUUID } = req.body;
