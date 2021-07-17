@@ -52,16 +52,4 @@ export class FoldersRepository extends BaseMySQLRepository {
             [ parentFolderUUID ],
         );
     }
-
-    async updateName(uuid, name) {
-        return super.update(
-            uuid, 
-            `
-                UPDATE ${this.tableName} 
-                SET name = ?
-                ${this.WHERE_UUID_EQUALS}
-            `,
-            [ name, uuid ],
-        );
-    }
 }

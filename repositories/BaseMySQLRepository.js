@@ -46,6 +46,18 @@ export class BaseMySQLRepository {
             [ parentUUID, uuid ],
         )
     }
+
+    updateName(uuid, name) {
+        return super.update(
+            uuid, 
+            `
+                UPDATE ${this.tableName}
+                SET name = ?
+                ${this.WHERE_UUID_EQUALS}
+            `,
+            [ name, uuid ],
+        );
+    }
     
     delete(uuid) {
         return this.query(
