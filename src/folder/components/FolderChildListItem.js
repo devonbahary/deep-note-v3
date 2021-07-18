@@ -9,13 +9,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
 import { styled } from '@material-ui/core/styles';
 import { FolderChildListItemActions } from './FolderChildListItemActions';
+import { ColorUtil } from '../../utilities/ColorUtil';
 
-const StyledAvatar = styled(Avatar)(({ theme, type }) => ({
-    '&.MuiAvatar-colorDefault': {
-        backgroundColor: type === 'folder' ? theme.palette.primary.main : 'transparent',
-        color: type === 'folder' ? 'inherit' : theme.palette.primary.main,
-    },
-}));
+const StyledAvatar = styled(Avatar)(({ color, theme, type }) => {
+    const itemColor = ColorUtil.getItemColor(color, theme);
+
+    return {
+        '&.MuiAvatar-colorDefault': {
+            backgroundColor: type === 'folder' ? itemColor : 'transparent',
+            color: type === 'folder' ? 'inherit' : itemColor,
+        },
+    };
+});
 
 const StyledBackdrop = styled(Backdrop)({
     zIndex: 1,
@@ -56,6 +61,7 @@ export const FolderChildListItem = (props) => {
         siblingFolders,
         type,
         updateChildApi,
+        updateColorApi,
         updateChildState,
     } = props;
 
@@ -94,6 +100,14 @@ export const FolderChildListItem = (props) => {
         setTimeout(() => setText(item.name || ''), 1);
     };
 
+    const handleMenuRecolor = async (color) => {
+        closeMenu();
+        setIsLoading(true);
+        const folderChild = await updateColorApi(item.uuid, color);
+        dispatch(updateChildState(folderChild))
+        setIsLoading(false);
+    };
+
     const handleMenuDelete = async () => {
         setIsLoading(true);
         await deleteChildApi(item.uuid);
@@ -119,7 +133,7 @@ export const FolderChildListItem = (props) => {
                     {isLoading ? (
                         <CircularProgress />
                     ) : (
-                        <StyledAvatar onClick={navigateToItem} type={type}>
+                        <StyledAvatar onClick={navigateToItem} type={type} color={item.color}>
                             <AvatarIcon />
                         </StyledAvatar>
                     )}
@@ -148,6 +162,7 @@ export const FolderChildListItem = (props) => {
                         closeMenu={closeMenu}
                         handleMenuDelete={handleMenuDelete}
                         handleMenuRename={handleMenuRename}
+                        handleMenuRecolor={handleMenuRecolor}
                         handleReparent={handleReparent}
                         item={item}
                         menuAnchorEl={menuAnchorEl}

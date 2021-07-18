@@ -26,6 +26,7 @@ export const FolderChildNote = ({ dispatch, note, parentFolder, siblingFolders }
             siblingFolders={siblingFolders}
             type="note"
             updateChildApi={ApiUtil.updateNoteName}
+            updateColorApi={ApiUtil.updateNoteColor}
             updateChildState={updateChildNote}
         />
     );

@@ -16,6 +16,11 @@ export class ApiUtil {
         return data;
     }
 
+    static async updateFolderColor(uuid, color) {
+        const { data } = await axios.put(`/api/folders/color/${uuid}`, { color });
+        return data;
+    }
+
     static async reparentFolder(uuid, parentFolderUUID) {
         const { data } = await axios.put(`/api/folders/re-parent/${uuid}`, { parentFolderUUID });
         return data;
@@ -37,6 +42,11 @@ export class ApiUtil {
 
     static async updateNoteName(uuid, name) {
         const { data } = await axios.put(`/api/notes/name/${uuid}`, { name });
+        return data;
+    }
+
+    static async updateNoteColor(uuid, color) {
+        const { data } = await axios.put(`/api/notes/color/${uuid}`, { color });
         return data;
     }
 

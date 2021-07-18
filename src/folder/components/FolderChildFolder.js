@@ -49,6 +49,7 @@ export const FolderChildFolder = ({ dispatch, folder, parentFolder, siblingFolde
             siblingFolders={siblingFolders}
             type="folder"
             updateChildApi={ApiUtil.updateFolderName}
+            updateColorApi={ApiUtil.updateFolderColor}
             updateChildState={updateChildFolder}
         />
     );
