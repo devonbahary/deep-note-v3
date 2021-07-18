@@ -48,7 +48,7 @@ export class BaseMySQLRepository {
     }
 
     updateColor(uuid, color) {
-        return super.update(
+        return this.update(
             uuid, 
             `
                 UPDATE ${this.tableName} 
@@ -60,7 +60,7 @@ export class BaseMySQLRepository {
     }
 
     updateName(uuid, name) {
-        return super.update(
+        return this.update(
             uuid, 
             `
                 UPDATE ${this.tableName}
