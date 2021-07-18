@@ -6,6 +6,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Folder } from './folder/components/Folder';
 import { Home } from './home/Home';
 import { Note } from './note/Note';
+import { Colors } from './folder/components/Colors';
 
 const theme = createMuiTheme({
     palette: {
@@ -47,6 +48,9 @@ const App = () => {
                         </Route>
                         <Route path="/folders/:uuid">
                             <Folder />
+                        </Route>
+                        <Route path="/colors">
+                            <Colors />
                         </Route>
                         <Route exact path="">
                             <Home />
