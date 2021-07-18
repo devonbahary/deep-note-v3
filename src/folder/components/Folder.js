@@ -22,9 +22,22 @@ import { addChildFolder, addChildNote, setFolder, setIsLoading } from '../action
 import { AddNewItemDialog } from './AddNewItemDialog';
 
 const StyledFab = styled(Fab)(({ theme }) => ({
+    backgroundColor: theme.palette.background.dark,
     position: 'fixed',
     right: theme.spacing(4),
     bottom: theme.spacing(4),
+    '&:hover': {
+        backgroundColor: theme.palette.background.paper,
+    },
+    '& .MuiSvgIcon-root': {
+        fill: theme.palette.text.primary,
+    },
+}));
+
+const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
+    '& .MuiSvgIcon-root': {
+        fill: theme.palette.text.primary,
+    },
 }));
 
 export const Folder = () => {
@@ -105,20 +118,20 @@ export const Folder = () => {
                     )}
                     {!isLoading && (
                         <>
-                            <StyledFab color="primary" onClick={openMenu}>
+                            <StyledFab onClick={openMenu}>
                                 <AddIcon />
                             </StyledFab>
                             <Menu anchorEl={menuAnchorEl} onClose={closeMenu} open={Boolean(menuAnchorEl)}>
                                 <MenuItem onClick={() => setCreatingNewFolder(true)}>
-                                    <ListItemIcon>
-                                        <FolderIcon color="primary" />
-                                    </ListItemIcon>
+                                    <StyledListItemIcon>
+                                        <FolderIcon />
+                                    </StyledListItemIcon>
                                     <ListItemText primary="Add new folder" />
                                 </MenuItem>
                                 <MenuItem onClick={() => setCreatingNewNote(true)}>
-                                    <ListItemIcon>
-                                        <NoteIcon color="primary" />
-                                    </ListItemIcon>
+                                    <StyledListItemIcon>
+                                        <NoteIcon />
+                                    </StyledListItemIcon>
                                     <ListItemText primary="Add new note" />
                                 </MenuItem>
                             </Menu>
