@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import { styled } from '@material-ui/core';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -13,22 +9,10 @@ import FolderIcon from '@material-ui/icons/Folder';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PaletteIcon from '@material-ui/icons/Palette';
 
+import { FolderChildMenuItem } from './FolderChildMenuItem';
 import { RecolorDialog } from './RecolorDialog';
 
-import { ColorUtil } from '../../../utilities/ColorUtil';
 import { FormatUtil } from '../../../utilities/FormatUtil';
-
-const StyledByItemListItemIcon = styled(ListItemIcon)(({ theme, item }) => ({
-    '& .MuiSvgIcon-root': {
-        fill: ColorUtil.getItemColor(item ? item.color : null, theme),
-    },
-}));
-
-const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
-    '& .MuiSvgIcon-root': {
-        fill: theme.palette.text.primary,
-    },
-}));
 
 // TODO: can we use context here?
 export const FolderChildActions = (props) => {
@@ -58,45 +42,42 @@ export const FolderChildActions = (props) => {
                 <MoreVertIcon />
             </IconButton>
             <Menu onClose={closeMenu} open={Boolean(menuAnchorEl)} anchorEl={menuAnchorEl}>
+                <FolderChildMenuItem 
+                    onClick={onRename}
+                    text="Rename"
+                    Icon={EditIcon}
+                />
+
+                <FolderChildMenuItem 
+                    item={item}
+                    onClick={() => setIsRecolorDialogOpen(true)}
+                    text="Recolor"
+                    Icon={PaletteIcon}
+                />
                 
-                <MenuItem onClick={onRename}>
-                    <StyledListItemIcon>
-                        <EditIcon />
-                    </StyledListItemIcon>
-                    <ListItemText primary="Rename" />
-                </MenuItem>
-
-                <MenuItem onClick={() => setIsRecolorDialogOpen(true)}>
-                    <StyledByItemListItemIcon item={item}>
-                        <PaletteIcon />
-                    </StyledByItemListItemIcon>
-                    <ListItemText primary="Recolor" />
-                </MenuItem>
-
                 {parentFolder.parent_folder_uuid && (
-                    <MenuItem onClick={() => onReparent(parentFolder.parent_folder_uuid)}>
-                        <StyledByItemListItemIcon item={parentFolder}>
-                            <FolderIcon />
-                        </StyledByItemListItemIcon>
-                        <ListItemText primary="Move to parent" />
-                    </MenuItem>
+                    <FolderChildMenuItem 
+                        onClick={() => onReparent(parentFolder.parent_folder_uuid)}
+                        text="Move to parent"
+                        Icon={FolderIcon}
+                    />
                 )}
 
                 {siblingFolders.map(siblingFolder => (
-                    <MenuItem key={siblingFolder.uuid} onClick={() => onReparent(siblingFolder.uuid)}>
-                        <StyledByItemListItemIcon item={siblingFolder}>
-                            <FolderIcon />
-                        </StyledByItemListItemIcon>
-                        <ListItemText primary={`Move to ${FormatUtil.getFolderName(siblingFolder)}`} />
-                    </MenuItem>
+                    <FolderChildMenuItem 
+                        key={siblingFolder.uuid}
+                        item={siblingFolder}
+                        onClick={() => onReparent(siblingFolder.uuid)}
+                        text={`Move to ${FormatUtil.getFolderName(siblingFolder)}`}
+                        Icon={FolderIcon}
+                    />
                 ))}
 
-                <MenuItem onClick={onDelete}>
-                    <StyledListItemIcon>
-                        <DeleteIcon />
-                    </StyledListItemIcon>
-                    <ListItemText primary="Delete" />
-                </MenuItem>
+                <FolderChildMenuItem 
+                    onClick={onDelete}
+                    text="Delete"
+                    Icon={DeleteIcon}
+                />
 
             </Menu>
             <RecolorDialog 
