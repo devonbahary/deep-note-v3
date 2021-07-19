@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import { AddNewItemFab } from './add-new-item/AddNewItemFab';
 import { AppBar } from '../../common/AppBar';
 import { Content } from '../../common/Content';
-import { FolderChildListItem } from './FolderChildListItem';
+import { FolderChildListItem } from './folder-child/FolderChildListItem';
 
 import { ApiUtil } from '../../utilities/ApiUtil';
 import { FormatUtil } from '../../utilities/FormatUtil';

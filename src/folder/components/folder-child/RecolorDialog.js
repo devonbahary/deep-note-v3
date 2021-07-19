@@ -7,7 +7,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { styled } from '@material-ui/core';
 
-import { colors } from '../../constants';
+import { colors } from '../../../constants';
 
 const StyledListItem = styled(ListItem)(({ color }) => ({
     background: color,

@@ -12,14 +12,14 @@ import { styled } from '@material-ui/core';
 import FolderIcon from '@material-ui/icons/Folder';
 import NoteIcon from '@material-ui/icons/Note';
 
-import { FolderChildListItemActions } from './FolderChildListItemActions';
+import { FolderChildActions } from './FolderChildActions';
 
-import { deleteChildFolder, deleteChildNote, updateChildFolder, updateChildNote } from '../actions';
+import { deleteChildFolder, deleteChildNote, updateChildFolder, updateChildNote } from '../../actions';
 
-import { ApiUtil } from '../../utilities/ApiUtil';
-import { ColorUtil } from '../../utilities/ColorUtil';
-import { FormatUtil } from '../../utilities/FormatUtil';
-import { RouterUtil } from '../../utilities/RouterUtil';
+import { ApiUtil } from '../../../utilities/ApiUtil';
+import { ColorUtil } from '../../../utilities/ColorUtil';
+import { FormatUtil } from '../../../utilities/FormatUtil';
+import { RouterUtil } from '../../../utilities/RouterUtil';
 
 const StyledAvatar = styled(Avatar)(({ color, theme, type }) => {
     const itemColor = ColorUtil.getItemColor(color, theme);
@@ -215,7 +215,7 @@ export const FolderChildListItem = (props) => {
                     />
                 )}
                 {!isLoading && (
-                    <FolderChildListItemActions 
+                    <FolderChildActions 
                         closeMenu={closeMenu}
                         item={item}
                         menuAnchorEl={menuAnchorEl}

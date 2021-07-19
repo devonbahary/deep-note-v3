@@ -15,8 +15,8 @@ import PaletteIcon from '@material-ui/icons/Palette';
 
 import { RecolorDialog } from './RecolorDialog';
 
-import { ColorUtil } from '../../utilities/ColorUtil';
-import { FormatUtil } from '../../utilities/FormatUtil';
+import { ColorUtil } from '../../../utilities/ColorUtil';
+import { FormatUtil } from '../../../utilities/FormatUtil';
 
 const StyledByItemListItemIcon = styled(ListItemIcon)(({ theme, item }) => ({
     '& .MuiSvgIcon-root': {
@@ -31,7 +31,7 @@ const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
 }));
 
 // TODO: can we use context here?
-export const FolderChildListItemActions = (props) => {
+export const FolderChildActions = (props) => {
     const { 
         closeMenu, 
         item, 
@@ -51,28 +51,6 @@ export const FolderChildListItemActions = (props) => {
         setIsRecolorDialogOpen(false);
         onRecolor(color);
     };
-
-    const menuItems = [];
-
-    if (parentFolder.parent_folder_uuid) {
-        menuItems.push({
-            Icon: FolderIcon,
-            item: parentFolder,
-            onClick: () => onReparent(parentFolder.parent_folder_uuid),
-            text: 'Move to parent',
-        });
-    }
-    
-    menuItems.push(...siblingFolders.reduce((acc, siblingFolder) => {
-        if (siblingFolder.uuid === item.uuid) return acc;
-        acc.push({
-            Icon: FolderIcon,
-            item: siblingFolder,
-            onClick: () => onReparent(siblingFolder.uuid),
-            text: `Move to ${FormatUtil.getFolderName(siblingFolder)}`,
-        });
-        return acc;
-    }, []));
 
     return (
         <ListItemSecondaryAction>
@@ -95,17 +73,23 @@ export const FolderChildListItemActions = (props) => {
                     <ListItemText primary="Recolor" />
                 </MenuItem>
 
-                {menuItems.map((menuItem, idx) => {
-                    const { Icon, item, onClick, text } = menuItem;
-                    return (
-                        <MenuItem key={idx} onClick={onClick}>
-                            <StyledByItemListItemIcon item={item}>
-                                <Icon />
-                            </StyledByItemListItemIcon>
-                            <ListItemText primary={text} />
-                        </MenuItem>
-                    );
-                })}
+                {parentFolder.parent_folder_uuid && (
+                    <MenuItem onClick={() => onReparent(parentFolder.parent_folder_uuid)}>
+                        <StyledByItemListItemIcon item={parentFolder}>
+                            <FolderIcon />
+                        </StyledByItemListItemIcon>
+                        <ListItemText primary="Move to parent" />
+                    </MenuItem>
+                )}
+
+                {siblingFolders.map(siblingFolder => (
+                    <MenuItem key={siblingFolder.uuid} onClick={() => onReparent(siblingFolder.uuid)}>
+                        <StyledByItemListItemIcon item={siblingFolder}>
+                            <FolderIcon />
+                        </StyledByItemListItemIcon>
+                        <ListItemText primary={`Move to ${FormatUtil.getFolderName(siblingFolder)}`} />
+                    </MenuItem>
+                ))}
 
                 <MenuItem onClick={onDelete}>
                     <StyledListItemIcon>
