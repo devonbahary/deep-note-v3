@@ -6,7 +6,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Folder } from './folder/components/Folder';
 import { Home } from './home/Home';
 import { Note } from './note/Note';
-import { Colors } from './folder/components/Colors';
+import { Colors } from './Colors';
 
 const theme = createMuiTheme({
     palette: {

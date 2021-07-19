@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors } from '../../constants';
+import { colors } from './constants';
 import { styled } from '@material-ui/core';
 
 const GridDiv = styled('div')({
