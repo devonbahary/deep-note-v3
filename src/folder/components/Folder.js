@@ -12,14 +12,22 @@ import FolderIcon from '@material-ui/icons/Folder';
 import NoteIcon from '@material-ui/icons/Note';
 import { AppBar } from '../../common/AppBar';
 import { Content } from '../../common/Content';
-import { FolderChildFolder } from './FolderChildFolder';
-import { FolderChildNote } from './FolderChildNote';
+import { FolderChildListItem } from './FolderChildListItem';
+import { AddNewItemDialog } from './AddNewItemDialog';
 import { ApiUtil } from '../../utilities/ApiUtil';
 import { FormatUtil } from '../../utilities/FormatUtil';
 import { RouterUtil } from '../../utilities/RouterUtil';
 import { reducer, initialState } from '../reducer';
-import { addChildFolder, addChildNote, setFolder, setIsLoading } from '../actions';
-import { AddNewItemDialog } from './AddNewItemDialog';
+import { 
+    addChildFolder,
+    addChildNote,
+    deleteChildFolder,
+    deleteChildNote,
+    setFolder,
+    setIsLoading,
+    updateChildFolder, 
+    updateChildNote, 
+} from '../actions';
 
 const StyledFab = styled(Fab)(({ theme }) => ({
     backgroundColor: theme.palette.background.dark,
@@ -93,29 +101,64 @@ export const Folder = () => {
 
     const title = FormatUtil.getFolderName(folder);
 
+    // TODO: don't delete a folder without verifying its contents / size of contents
     return (
         <>
             <AppBar goBackFn={goBackFn} title={title} />
             <Content>
                 <List>
-                    {childFolders.map(childFolder => 
-                        <FolderChildFolder
-                            key={childFolder.uuid} 
-                            dispatch={dispatch}
-                            folder={childFolder} 
-                            parentFolder={folder}
-                            siblingFolders={childFolders}
-                        /> 
-                    )}
-                    {childNotes.map(note => 
-                        <FolderChildNote 
-                            key={note.uuid}
-                            dispatch={dispatch}
-                            note={note}
-                            parentFolder={folder}
-                            siblingFolders={childFolders}
-                        />
-                    )}
+                    {childFolders.map(childFolder => {
+                        const primaryText = FormatUtil.getFolderName(childFolder);
+                        const secondaryText = FormatUtil.getFolderSecondaryText(childFolder);
+
+                        return (
+                            <FolderChildListItem 
+                                key={childFolder.uuid}
+                                AvatarIcon={FolderIcon}
+                                deleteChildApi={ApiUtil.deleteFolder}
+                                deleteChildState={deleteChildFolder}
+                                dispatch={dispatch}
+                                item={childFolder}
+                                navigateFn={RouterUtil.goToFolder}
+                                parentFolder={folder}
+                                placeholder="folder name"
+                                primaryText={primaryText}
+                                reparentChildApi={ApiUtil.reparentFolder}
+                                secondaryText={secondaryText}
+                                siblingFolders={childFolders}
+                                type="folder"
+                                updateChildApi={ApiUtil.updateFolderName}
+                                updateColorApi={ApiUtil.updateFolderColor}
+                                updateChildState={updateChildFolder}
+                            />      
+                        );
+                    })}
+                    {childNotes.map(note => {
+                        const primaryText = FormatUtil.getName(note);
+                        const secondaryText = FormatUtil.getRelativeTimeFromMySQLTime(note.updated_at);
+
+                        return (
+                            <FolderChildListItem
+                                key={note.uuid}
+                                AvatarIcon={NoteIcon}
+                                deleteChildApi={ApiUtil.deleteNote}
+                                deleteChildState={deleteChildNote}
+                                dispatch={dispatch}
+                                item={note}
+                                navigateFn={RouterUtil.goToNote}
+                                parentFolder={folder}
+                                placeholder="note name"
+                                primaryText={primaryText}
+                                reparentChildApi={ApiUtil.reparentNote}
+                                secondaryText={secondaryText}
+                                siblingFolders={childFolders}
+                                type="note"
+                                updateChildApi={ApiUtil.updateNoteName}
+                                updateColorApi={ApiUtil.updateNoteColor}
+                                updateChildState={updateChildNote}
+                            />
+                        );
+                    })}
                     {!isLoading && (
                         <>
                             <StyledFab onClick={openMenu}>
