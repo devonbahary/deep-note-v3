@@ -1,6 +1,12 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import { DialogContent, DialogContentText, DialogTitle, List, ListItem, styled } from '@material-ui/core';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import { styled } from '@material-ui/core';
+
 import { colors } from '../../constants';
 
 const StyledListItem = styled(ListItem)(({ color }) => ({
@@ -9,7 +15,7 @@ const StyledListItem = styled(ListItem)(({ color }) => ({
     height: '5rem',
 }));
 
-export const RecolorDialog = ({ onClose, open, onSubmit }) => {
+export const RecolorDialog = ({ onClose, onSubmit, open }) => {
     return (
         <Dialog 
             fullWidth
@@ -25,13 +31,15 @@ export const RecolorDialog = ({ onClose, open, onSubmit }) => {
                     Select a new color for the item.
                 </DialogContentText>
                 <List>
-                    {Object.entries(colors).map(([ colorName, colorCSS ]) => (
-                        <StyledListItem 
-                            key={colorName} 
-                            color={colorCSS}
-                            onClick={() => onSubmit(colorName)}
-                        />
-                    ))}
+                    {Object.entries(colors).map(
+                        ([ colorName, colorCSS ]) => (
+                            <StyledListItem 
+                                key={colorName} 
+                                color={colorCSS}
+                                onClick={() => onSubmit(colorName)}
+                            />
+                        )
+                    )}
                 </List>
             </DialogContent>
         </Dialog>

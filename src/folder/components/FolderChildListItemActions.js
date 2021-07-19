@@ -5,15 +5,18 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { styled } from '@material-ui/core';
+
 import DeleteIcon from '@material-ui/icons/Delete';
-import PaletteIcon from '@material-ui/icons/Palette';
 import EditIcon from '@material-ui/icons/Edit';
 import FolderIcon from '@material-ui/icons/Folder';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { FormatUtil } from '../../utilities/FormatUtil';
-import { styled } from '@material-ui/core';
-import { ColorUtil } from '../../utilities/ColorUtil';
+import PaletteIcon from '@material-ui/icons/Palette';
+
 import { RecolorDialog } from './RecolorDialog';
+
+import { ColorUtil } from '../../utilities/ColorUtil';
+import { FormatUtil } from '../../utilities/FormatUtil';
 
 const StyledByItemListItemIcon = styled(ListItemIcon)(({ theme, item }) => ({
     '& .MuiSvgIcon-root': {
@@ -31,12 +34,12 @@ const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
 export const FolderChildListItemActions = (props) => {
     const { 
         closeMenu, 
-        handleMenuDelete, 
-        handleMenuRecolor,
-        handleMenuRename, 
-        handleReparent,
         item, 
         menuAnchorEl, 
+        onDelete, 
+        onRecolor,
+        onRename, 
+        onReparent,
         openMenu,
         parentFolder,
         siblingFolders,
@@ -46,7 +49,7 @@ export const FolderChildListItemActions = (props) => {
 
     const onColorChange = (color) => {
         setIsRecolorDialogOpen(false);
-        handleMenuRecolor(color);
+        onRecolor(color);
     };
 
     const menuItems = [];
@@ -55,7 +58,7 @@ export const FolderChildListItemActions = (props) => {
         menuItems.push({
             Icon: FolderIcon,
             item: parentFolder,
-            onClick: () => handleReparent(parentFolder.parent_folder_uuid),
+            onClick: () => onReparent(parentFolder.parent_folder_uuid),
             text: 'Move to parent',
         });
     }
@@ -65,7 +68,7 @@ export const FolderChildListItemActions = (props) => {
         acc.push({
             Icon: FolderIcon,
             item: siblingFolder,
-            onClick: () => handleReparent(siblingFolder.uuid),
+            onClick: () => onReparent(siblingFolder.uuid),
             text: `Move to ${FormatUtil.getFolderName(siblingFolder)}`,
         });
         return acc;
@@ -78,7 +81,7 @@ export const FolderChildListItemActions = (props) => {
             </IconButton>
             <Menu onClose={closeMenu} open={Boolean(menuAnchorEl)} anchorEl={menuAnchorEl}>
                 
-                <MenuItem onClick={handleMenuRename}>
+                <MenuItem onClick={onRename}>
                     <StyledListItemIcon>
                         <EditIcon />
                     </StyledListItemIcon>
@@ -104,7 +107,7 @@ export const FolderChildListItemActions = (props) => {
                     );
                 })}
 
-                <MenuItem onClick={handleMenuDelete}>
+                <MenuItem onClick={onDelete}>
                     <StyledListItemIcon>
                         <DeleteIcon />
                     </StyledListItemIcon>
@@ -113,9 +116,9 @@ export const FolderChildListItemActions = (props) => {
 
             </Menu>
             <RecolorDialog 
-                open={isRecolorDialogOpen} 
                 onClose={() => setIsRecolorDialogOpen(false)} 
                 onSubmit={onColorChange}
+                open={isRecolorDialogOpen} 
             />
         </ListItemSecondaryAction>
     );

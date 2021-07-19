@@ -7,9 +7,19 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
-import { styled } from '@material-ui/core/styles';
+import { styled } from '@material-ui/core';
+
+import FolderIcon from '@material-ui/icons/Folder';
+import NoteIcon from '@material-ui/icons/Note';
+
 import { FolderChildListItemActions } from './FolderChildListItemActions';
+
+import { deleteChildFolder, deleteChildNote, updateChildFolder, updateChildNote } from '../actions';
+
+import { ApiUtil } from '../../utilities/ApiUtil';
 import { ColorUtil } from '../../utilities/ColorUtil';
+import { FormatUtil } from '../../utilities/FormatUtil';
+import { RouterUtil } from '../../utilities/RouterUtil';
 
 const StyledAvatar = styled(Avatar)(({ color, theme, type }) => {
     const itemColor = ColorUtil.getItemColor(color, theme);
@@ -45,24 +55,50 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     },
 }));
 
+const getDeleteFunctions = (type) => {
+    return type === 'folder'
+        ? [ ApiUtil.deleteFolder, deleteChildFolder ]
+        : [ ApiUtil.deleteNote, deleteChildNote ];
+};
+
+const getListItemTextFunctions = (type) => {
+    return type === 'folder'
+        ? [ FormatUtil.getFolderName, FormatUtil.getFolderSecondaryText ]
+        : [ FormatUtil.getName, FormatUtil.getNoteSecondaryText ];
+};
+
+const getNavigateFunction = (type) => {
+    return type === 'folder'
+        ? RouterUtil.goToFolder
+        : RouterUtil.goToNote;
+};
+
+const getRecolorFunctions = (type) => {
+    return type === 'folder'
+        ? [ ApiUtil.updateFolderColor, updateChildFolder ]
+        : [ ApiUtil.updateNoteColor, updateChildNote ];
+};
+
+const getReparentFunctions = (type) => {
+    return type === 'folder'
+        ? [ ApiUtil.reparentFolder, deleteChildFolder ]
+        : [ ApiUtil.reparentNote, deleteChildNote ];
+};
+
+const getUpdateNameFunctions = (type) => {
+    return type === 'folder'
+        ? [ ApiUtil.updateFolderName, updateChildFolder ]
+        : [ ApiUtil.updateNoteName, updateChildNote ];
+};
+
 export const FolderChildListItem = (props) => {
     const {
-        AvatarIcon,
-        deleteChildApi,
-        deleteChildState,
         dispatch,
         item,
-        navigateFn,
         parentFolder,
         placeholder,
-        primaryText,
-        reparentChildApi,
-        secondaryText,
         siblingFolders,
         type,
-        updateChildApi,
-        updateColorApi,
-        updateChildState,
     } = props;
 
     const history = useHistory();
@@ -75,56 +111,74 @@ export const FolderChildListItem = (props) => {
 
     const [ isLoading, setIsLoading ] = useState(false);
 
-    const handleChange = (e) => setText(e.target.value);
-
-    const handleBlur = async () => {
+    const updateName = async () => {
         setText(null);
-        if (text === item.name) return;
+        
+        if (text === item.name) {
+            return;
+        }
+        
         setIsLoading(true);
-        const folderChild = await updateChildApi(item.uuid, text);
-        dispatch(updateChildState(folderChild))
+        
+        const [ updateNameApi, updateChildState ] = getUpdateNameFunctions(type);
+        const updatedChild = await updateNameApi(item.uuid, text);
+        dispatch(updateChildState(updatedChild));
+
         setIsLoading(false);
     };
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') handleBlur();
+    const onKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            updateName();
+        }
     };
 
-    const navigateToItem = () => {
-        if (isLoading) return;
-        navigateFn(history, item.uuid);
+    const navigate = () => {
+        if (!isLoading) {
+            getNavigateFunction(type)(history, item.uuid);
+        }
     }
 
-    const handleMenuRename = () => {
+    const onRename = () => {
         closeMenu();
+        // TODO: this is bad
         setTimeout(() => setText(item.name || ''), 1);
     };
 
-    const handleMenuRecolor = async (color) => {
+    const onRecolor = async (color) => {
         closeMenu();
         setIsLoading(true);
-        const folderChild = await updateColorApi(item.uuid, color);
-        dispatch(updateChildState(folderChild))
+
+        const [ updateColorApi, updateChildState ] = getRecolorFunctions(type);
+        const updatedChild = await updateColorApi(item.uuid, color);
+        dispatch(updateChildState(updatedChild));
+
         setIsLoading(false);
     };
 
-    const handleMenuDelete = async () => {
+    const onDelete = async () => {
         setIsLoading(true);
-        await deleteChildApi(item.uuid);
+
+        const [ deleteApi, deleteChildState ] = getDeleteFunctions(type);
+        await deleteApi(item.uuid);
         dispatch(deleteChildState(item.uuid));
+        
         setIsLoading(false);
     };
     
-    const handleReparent = async (parentUUID) => {
+    const onReparent = async (parentUUID) => {
         setIsLoading(true);
-        await reparentChildApi(item.uuid, parentUUID);
+
+        const [ reparentApi, deleteChildState ] = getReparentFunctions(type);
+        await reparentApi(item.uuid, parentUUID);
         dispatch(deleteChildState(item.uuid));
+        
         setIsLoading(false);
     };
 
-    const handleBackdropClick = () => setText(null);
-
     const isRenaming = text !== null;
+
+    const [ getPrimaryText, getSecondaryText ] = getListItemTextFunctions(type);
 
     return (
         <>
@@ -133,8 +187,11 @@ export const FolderChildListItem = (props) => {
                     {isLoading ? (
                         <CircularProgress />
                     ) : (
-                        <StyledAvatar onClick={navigateToItem} type={type} color={item.color}>
-                            <AvatarIcon />
+                        <StyledAvatar onClick={navigate} type={type} color={item.color}>
+                            {type === 'folder'
+                                ? <FolderIcon />
+                                : <NoteIcon />
+                            }
                         </StyledAvatar>
                     )}
                 </ListItemAvatar>
@@ -143,29 +200,29 @@ export const FolderChildListItem = (props) => {
                         autoFocus 
                         fullWidth
                         label="name"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        onKeyPress={handleKeyPress}
+                        onBlur={updateName}
+                        onChange={(e) => setText(e.target.value)}
+                        onKeyPress={onKeyPress}
                         placeholder={placeholder}
                         value={text}
                         variant="outlined"
                     />
                 ) : (
                     <StyledListItemText 
-                        onClick={navigateToItem} 
-                        primary={primaryText} 
-                        secondary={secondaryText} 
+                        onClick={navigate} 
+                        primary={getPrimaryText(item)} 
+                        secondary={getSecondaryText(item)} 
                     />
                 )}
                 {!isLoading && (
                     <FolderChildListItemActions 
                         closeMenu={closeMenu}
-                        handleMenuDelete={handleMenuDelete}
-                        handleMenuRename={handleMenuRename}
-                        handleMenuRecolor={handleMenuRecolor}
-                        handleReparent={handleReparent}
                         item={item}
                         menuAnchorEl={menuAnchorEl}
+                        onDelete={onDelete}
+                        onRecolor={onRecolor}
+                        onRename={onRename}
+                        onReparent={onReparent}
                         openMenu={openMenu}
                         parentFolder={parentFolder}
                         siblingFolders={siblingFolders}
@@ -174,7 +231,7 @@ export const FolderChildListItem = (props) => {
             </StyledListItem>
             <StyledBackdrop
                 invisible
-                onClick={handleBackdropClick}
+                onClick={() => setText(null)}
                 open={isRenaming}
             />
         </>

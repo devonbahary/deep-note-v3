@@ -35,4 +35,8 @@ export class FormatUtil {
         
         return secondaryText;
     };
+
+    static getNoteSecondaryText(note) {
+        return FormatUtil.getRelativeTimeFromMySQLTime(note.updated_at);
+    }
 }
